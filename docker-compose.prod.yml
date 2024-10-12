@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+    frontend:
+        container_name: frontend_prod
+        build:
+            context: ./app/frontend
+            dockerfile: Dockerfile.prod
+        ports:
+            - "80:80"
+        environment:
+            - NODE_ENV=production
+
+    backend:
+        container_name: backend_prod
+        build:
+            context: ./app/backend
+            dockerfile: Dockerfile.prod
+        ports:
+            - "3000:3000"
+        environment:
+            - NODE_ENV=production

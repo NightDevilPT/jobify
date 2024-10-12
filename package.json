@@ -1,0 +1,12 @@
+{
+	"name": "monorepo",
+	"version": "1.0.0",
+	"scripts": {
+		"dev:up": "docker-compose -f docker-compose.dev.yml up --build -d",
+		"dev:down": "docker-compose -f docker-compose.dev.yml down",
+		"prod:up": "docker-compose -f docker-compose.prod.yml up --build",
+		"prod:down": "docker-compose -f docker-compose.prod.yml down",
+		"install:frontend": "cd app/frontend && npm install",
+		"install:backend": "cd app/backend && npm install"
+	}
+}

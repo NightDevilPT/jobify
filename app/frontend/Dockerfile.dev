@@ -1,0 +1,22 @@
+# Stage 1: Development
+FROM node:18 AS development
+
+WORKDIR /usr/src/app
+
+# Install Angular CLI
+RUN npm install -g @angular/cli
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy all frontend files
+COPY . .
+
+# Expose port for development
+EXPOSE 4200
+
+# Serve the Angular app
+CMD ["ng", "serve", "--host", "0.0.0.0"]

@@ -1,0 +1,28 @@
+# Stage 1: Build Angular app
+FROM node:18 AS build
+
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy all files to container
+COPY . .
+
+# Build the Angular app in production mode
+RUN npm run build --prod
+
+# Stage 2: Serve with NGINX
+FROM nginx:alpine
+
+# Copy the build output to NGINX default folder
+COPY --from=build /usr/src/app/dist/your-angular-app-name /usr/share/nginx/html
+
+# Expose port 80 to serve the app
+EXPOSE 80
+
+# Start NGINX server
+CMD ["nginx", "-g", "daemon off;"]

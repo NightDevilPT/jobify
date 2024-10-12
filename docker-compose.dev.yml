@@ -1,0 +1,64 @@
+version: "3.8"
+services:
+    frontend:
+        container_name: frontend_dev
+        build:
+            context: ./app/frontend
+            dockerfile: Dockerfile.dev
+        volumes:
+            - ./app/frontend:/usr/src/app
+            - /usr/src/app/node_modules
+        ports:
+            - "4200:4200"
+        environment:
+            - NODE_ENV=development
+        command: ng serve --host 0.0.0.0 --poll 2000
+        deploy:
+            resources:
+                limits:
+                    cpus: "0.5"
+                    memory: "512M"
+
+    backend:
+        container_name: backend_dev
+        build:
+            context: ./app/backend
+            dockerfile: Dockerfile.dev
+        volumes:
+            - ./app/backend:/usr/src/app
+            - /usr/src/app/node_modules
+        ports:
+            - "3000:3000"
+        environment:
+            - NODE_ENV=development
+            - MONGODB_URI=mongodb://mongodb:27016/nestjs-db # MongoDB connection string for the app
+        command: npm run start:dev --poll 2000
+        depends_on:
+            - mongodb
+        deploy:
+            resources:
+                limits:
+                    cpus: "0.75"
+                    memory: "1G"
+
+    mongodb:
+        image: mongo:latest
+        container_name: mongo-db
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: "root"
+            MONGO_INITDB_ROOT_PASSWORD: "root"
+            MONGO_INITDB_DATABASE: "jobify"
+        ports:
+            - "127.0.0.1:27018:27017" # Use port 27018 on host, map to 27017 in the container
+        networks:
+            - mongo
+        volumes:
+            - mongo-data:/data/db
+            - mongo-config:/data/configdb
+
+volumes:
+    mongo-data:
+    mongo-config:
+
+networks:
+    mongo:
