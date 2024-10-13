@@ -41,7 +41,21 @@ const createCQRSStructure = (folderPath, entityName) => {
     },
     {
       path: `repositories/${entityName}.repository.ts`,
-      content: `// ${capitalizedEntityName} repository implementation`,
+      content: `import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
+import { BaseRepository } from 'src/common/repositories/base.repository';
+import { ${capitalizedEntityName} } from '../entities/${entityName}.entity';
+
+@Injectable()
+export class ${capitalizedEntityName}Repository extends BaseRepository<${capitalizedEntityName}> {
+  constructor(
+    @InjectModel(${capitalizedEntityName}.name) private readonly ${entityName}Model: Model<${capitalizedEntityName}>,
+  ) {
+    super(${entityName}Model);
+  }
+}
+`,
     },
   ];
 
@@ -52,6 +66,41 @@ const createCQRSStructure = (folderPath, entityName) => {
       console.log(`Created file: ${filePath}`);
     }
   });
+
+  // Update entity file to extend Document
+  updateEntityFile(path.join(folderPath, 'entities', `${entityName}.entity.ts`), entityName);
+};
+
+// Function to update the entity file to extend Document
+const updateEntityFile = (entityFilePath, entityName) => {
+  const capitalizedEntityName = capitalizeFirstLetter(entityName);
+
+  let entityFileContent = '';
+
+  if (fs.existsSync(entityFilePath)) {
+    entityFileContent = fs.readFileSync(entityFilePath, 'utf8');
+  }
+
+  // Check if the file already contains the Mongoose Document extension and add if missing
+  if (!entityFileContent.includes('extends Document')) {
+    // Add import statement if it's not already present
+    if (!entityFileContent.includes(`import { Document } from 'mongoose';`)) {
+      entityFileContent = `import { Document } from 'mongoose';\n${entityFileContent}`;
+    }
+
+    // Modify the class to extend Document
+    const classDeclarationRegex = new RegExp(`class ${capitalizedEntityName}[^\\{]*\\{`);
+    entityFileContent = entityFileContent.replace(
+      classDeclarationRegex,
+      ` class ${capitalizedEntityName} extends Document {`
+    );
+
+    // Write the updated entity file content
+    fs.writeFileSync(entityFilePath, entityFileContent, 'utf8');
+    console.log(`Updated entity file: ${entityFilePath} to extend Document.`);
+  } else {
+    console.log(`Entity file: ${entityFilePath} already extends Document.`);
+  }
 };
 
 // Function to update the module.ts file to add command and query handlers
