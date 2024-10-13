@@ -31,8 +31,9 @@ services:
             - "3000:3000"
         environment:
             - NODE_ENV=development
-            - MONGODB_URI=mongodb://mongodb:27016/nestjs-db # MongoDB connection string for the app
-        command: npm run start:dev --poll 2000
+            - MONGODB_URI=mongodb://root:root@127.0.0.1:27018/jobify?authSource=admin
+            - CHOKIDAR_USEPOLLING=true
+        command: npx nodemon --watch src --exec "npm run start:dev" 
         depends_on:
             - mongodb
         deploy:
@@ -49,7 +50,7 @@ services:
             MONGO_INITDB_ROOT_PASSWORD: "root"
             MONGO_INITDB_DATABASE: "jobify"
         ports:
-            - "127.0.0.1:27018:27017" # Use port 27018 on host, map to 27017 in the container
+            - "127.0.0.1:27018:27017"
         networks:
             - mongo
         volumes:
