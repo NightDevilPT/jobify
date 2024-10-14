@@ -24,7 +24,7 @@ export enum WorkType {
   HYBRID = 'HYBRID',
 }
 
-export enum Degree {
+export enum DegreeEnum {
   HIGH_SCHOOL = 'HIGH_SCHOOL',
   ASSOCIATE = 'ASSOCIATE',
   BACHELORS = 'BACHELORS',
