@@ -13,7 +13,8 @@ export class LoggerService {
       format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.printf(({ level, message, timestamp, context }) => {
-          return `[${level.toUpperCase()}] ${timestamp} ${context ? `[${context}]` : ''} ${message}`;
+          // Custom log format: Context Timestamp Message
+          return `[${context ? `${context}` : ''}] [${timestamp}] ${message}`;
         }),
       ),
       transports: [

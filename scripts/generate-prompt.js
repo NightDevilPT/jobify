@@ -6,39 +6,39 @@ const readline = require('readline');
 const template = `
 folder structure of CQRS Module
 [moduleName]                          // Root folder for the module (replace with actual module name)
-│
-├── commands                          // Contains all command-related logic (for write operations)
-│   ├── handler                       // Contains handlers that process the commands (create, update, delete)
-│   │   ├── [commandName].handler.ts  // Command handler for a specific command, e.g., CreateUserHandler
-│   │
-│   ├── impl                          // Implementation folder for command definitions (write operations)
-│   │   ├── [commandName].command.ts  // Command file for a specific write operation, e.g., CreateUserCommand
-│   │
-│   ├── index.ts                      // Exports all command handlers in an array for easy import
-│
-├── dto                               // Contains Data Transfer Objects (DTOs) for command and query inputs
-│   ├── [moduleName].dto.ts           // DTOs for the module (e.g., CreateUserDto, UpdateUserDto)
-│
-├── entities                          // Contains the database entities
-│   ├── user.entity.ts                // Entity definitions (e.g., UserEntity, OrderEntity)
-│
-├── queries                           // Contains all query-related logic (for read operations)
-│   ├── handler                       // Contains handlers that process the queries (read operations)
-│   │   ├── [queryName].handler.ts    // Query handler for a specific read operation, e.g., GetUserHandler
-│   │
-│   ├── impl                          // Implementation folder for query definitions (read operations)
-│   │   ├── [queryName].query.ts      // Query file for a specific read operation, e.g., GetUserQuery
-│   │
-│   ├── index.ts                      // Exports all query handlers in an array for easy import
-│
-├── repository                        // Contains repository logic for interacting with the database
-│   ├── [moduleName].repository.ts    // The repository for data access, e.g., UserRepository
-│
-├── [moduleName].controller.ts        // The controller that handles incoming HTTP requests (REST endpoints)
-│
-├── [moduleName].module.ts            // The main module definition for dependency injection
-│
-└── [moduleName].service.ts           // Service that contains business logic (possibly calls command/query handlers)
+ |
+ |- commands                          // Contains all command-related logic (for write operations)
+ |    |- handler                       // Contains handlers that process the commands (create, update, delete)
+ |    |    |- [commandName].handler.ts  // Command handler for a specific command, e.g., CreateUserHandler
+ |    |
+ |    |- impl                          // Implementation folder for command definitions (write operations)
+ |    |    |- [commandName].command.ts  // Command file for a specific write operation, e.g., CreateUserCommand
+ |    |
+ |    |- index.ts                      // Exports all command handlers in an array for easy import
+ |
+ |- dto                               // Contains Data Transfer Objects (DTOs) for command and query inputs
+ |    |- [moduleName].dto.ts           // DTOs for the module (e.g., CreateUserDto, UpdateUserDto)
+ |
+ |- entities                          // Contains the database entities
+ |    | user.entity.ts                // Entity definitions (e.g., UserEntity, OrderEntity)
+ |
+ |- queries                           // Contains all query-related logic (for read operations)
+ |    |- handler                       // Contains handlers that process the queries (read operations)
+ |    |    |- [queryName].handler.ts    // Query handler for a specific read operation, e.g., GetUserHandler
+ |    |
+ |    |- impl                          // Implementation folder for query definitions (read operations)
+ |    |    |- [queryName].query.ts      // Query file for a specific read operation, e.g., GetUserQuery
+ |    |
+ |    |- index.ts                      // Exports all query handlers in an array for easy import
+ |
+ |- repository                        // Contains repository logic for interacting with the database
+ |    |- [moduleName].repository.ts    // The repository for data access, e.g., UserRepository
+ |
+ |- [moduleName].controller.ts        // The controller that handles incoming HTTP requests (REST endpoints)
+ |
+ |- [moduleName].module.ts            // The main module definition for dependency injection
+ |
+ |- [moduleName].service.ts           // Service that contains business logic (possibly calls command/query handlers)
 
 this is my folder structure of the CQRS module which contains the commands and queries
 this folder contains the handler and impl 
@@ -189,6 +189,9 @@ Controller :
 
 Service : 
 {{serviceCode}}
+
+Repository : 
+{{repoCode}}
 `;
 
 // Utility function to read file content
@@ -199,6 +202,7 @@ const readFileContent = (filePath) => {
 // Function to generate the prompt file
 const generatePrompt = (moduleFolderPath) => {
   const entityPath = path.join(moduleFolderPath, 'entities', 'user.entity.ts');
+  const repoPath = path.join(moduleFolderPath, 'repositories', 'user.repository.ts');
   const controllerPath = path.join(moduleFolderPath, `${path.basename(moduleFolderPath)}.controller.ts`);
   const servicePath = path.join(moduleFolderPath, `${path.basename(moduleFolderPath)}.service.ts`);
 
@@ -206,8 +210,9 @@ const generatePrompt = (moduleFolderPath) => {
   const entityCode = readFileContent(entityPath);
   const controllerCode = readFileContent(controllerPath);
   const serviceCode = readFileContent(servicePath);
+  const repoCode = readFileContent(repoPath);
 
-  if (!entityCode || !controllerCode || !serviceCode) {
+  if (!entityCode || !controllerCode || !serviceCode || !repoCode) {
     console.log('Error: One or more required files (entity, controller, service) are missing.');
     return;
   }
@@ -216,7 +221,8 @@ const generatePrompt = (moduleFolderPath) => {
   const finalPrompt = template
     .replace('{{entityCode}}', entityCode)
     .replace('{{controllerCode}}', controllerCode)
-    .replace('{{serviceCode}}', serviceCode);
+    .replace('{{serviceCode}}', serviceCode)
+    .replace('{{repoCode}}', repoCode);
 
   // Write the final prompt to a file
   fs.writeFileSync(path.join(moduleFolderPath, 'prompt.txt'), finalPrompt);
