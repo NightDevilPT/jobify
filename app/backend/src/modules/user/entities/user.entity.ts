@@ -33,7 +33,7 @@ export class User extends Document {
 
   @ApiProperty({ type: Profile })
   @Prop({ type: Types.ObjectId, ref: 'Profile', autopopulate: true }) // One-to-One Relation
-  profile: Profile;
+  profile?: Profile;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
