@@ -5,6 +5,8 @@ import { UserRepository } from '../../repositories/user.repository';
 import { BaseResponse } from 'src/common/interfaces/response';
 import { LoggerService } from 'src/services/logger/logger.service';
 import { HashService } from 'src/services/hash/hash.service';
+import { MailService } from 'src/services/mail/mail.service';
+import { ConfigService } from '@nestjs/config';
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
@@ -12,7 +14,9 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     private readonly userRepository: UserRepository,
     private readonly errorService: ErrorService,
     private readonly hashService: HashService,
-    private readonly loggerService: LoggerService
+    private readonly loggerService: LoggerService,
+    private readonly configService: ConfigService,
+    private readonly mailService: MailService, // Inject MailService
   ) {
     this.loggerService.setContext('CreateUserHandler');
   }
@@ -29,9 +33,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     }
 
     const [hashToken, hashPassword] = await Promise.all([
-      this.hashService.hashPassword(
-        `${new Date().toLocaleDateString()}-${email}`,
-      ),
+      this.hashService.hashPassword(`${new Date().toLocaleDateString()}-${email}`),
       this.hashService.hashPassword(password),
     ]);
 
@@ -46,6 +48,15 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     });
 
     this.loggerService.log(`User successfully created with email: ${email}`);
-    return { message: 'User successfully created' };
+
+    // Generate verification URL
+    const verificationUrl = `${this.configService.get<string>("ORIGIN")}/auth/verify?token=${hashToken}`;
+
+    // Send verification email
+    await this.mailService.sendVerificationEmail(email, username, verificationUrl);
+
+    this.loggerService.log(`Verification email sent to: ${email}`);
+
+    return { message: `User successfully created. Verification link sent to ${email}.` };
   }
 }
