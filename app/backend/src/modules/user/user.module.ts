@@ -10,6 +10,7 @@ import { ErrorModule } from 'src/services/error/error.module';
 import { LoggerModule } from 'src/services/logger/logger.module';
 import { UserRepository } from './repositories/user.repository';
 import { HashModule } from 'src/services/hash/hash.module';
+import { MailModule } from 'src/services/mail/mail.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { HashModule } from 'src/services/hash/hash.module';
     ErrorModule,
     LoggerModule,
     HashModule,
+    MailModule
   ],
   controllers: [UserController],
   providers: [
