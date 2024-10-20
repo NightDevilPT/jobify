@@ -2,13 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
 
-// Define the template (Your provided prompt)
+// Template for the CQRS Module folder structure with relative paths included
 const template = `
 folder structure of CQRS Module
 [moduleName]                          // Root folder for the module (replace with actual module name)
  |
  |- commands                          // Contains all command-related logic (for write operations)
- |    |- handler                       // Contains handlers that process the commands (create, update, delete)
+ |    |- handler                      // Contains handlers that process the commands (create, update, delete)
  |    |    |- [commandName].handler.ts  // Command handler for a specific command, e.g., CreateUserHandler
  |    |
  |    |- impl                          // Implementation folder for command definitions (write operations)
@@ -20,14 +20,14 @@ folder structure of CQRS Module
  |    |- [moduleName].dto.ts           // DTOs for the module (e.g., CreateUserDto, UpdateUserDto)
  |
  |- entities                          // Contains the database entities
- |    | user.entity.ts                // Entity definitions (e.g., UserEntity, OrderEntity)
+ |    |- [moduleName].entity.ts        // Entity definitions (e.g., UserEntity, OrderEntity)
  |
  |- queries                           // Contains all query-related logic (for read operations)
  |    |- handler                       // Contains handlers that process the queries (read operations)
- |    |    |- [queryName].handler.ts    // Query handler for a specific read operation, e.g., GetUserHandler
+ |    |    |- [queryName].handler.ts   // Query handler for a specific read operation, e.g., GetUserHandler
  |    |
  |    |- impl                          // Implementation folder for query definitions (read operations)
- |    |    |- [queryName].query.ts      // Query file for a specific read operation, e.g., GetUserQuery
+ |    |    |- [queryName].query.ts     // Query file for a specific read operation, e.g., GetUserQuery
  |    |
  |    |- index.ts                      // Exports all query handlers in an array for easy import
  |
@@ -40,158 +40,44 @@ folder structure of CQRS Module
  |
  |- [moduleName].service.ts           // Service that contains business logic (possibly calls command/query handlers)
 
-this is my folder structure of the CQRS module which contains the commands and queries
-this folder contains the handler and impl 
-handler contains all the handlers which listen command which will be created in the impl folder of command and query
-all write,update,delete command and its handler will be generate in the commands folder
-but for read operation we use query command and its handler to get data which contains in queries handler,impl folder
-all handlers logic use the Respository folder to connect with db and perform action 
+Repository (Path: {{repoPath}}): 
+{{repoCode}}
 
-workflow : controller -> service -> ( service trigger the command ) -> command handler perform a logic and return response
-
-Common Service which we are using
-
-Error Service :
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-  InternalServerErrorException,
-  UnauthorizedException,
-  ForbiddenException,
-  ConflictException,
-  GoneException,
-  ImATeapotException,
-  MethodNotAllowedException,
-  NotAcceptableException,
-  RequestTimeoutException,
-  UnsupportedMediaTypeException,
-} from '@nestjs/common';
-
-@Injectable()
-export class ErrorService {
-  throwNotFoundError(message: string): void {
-    throw new NotFoundException(message);
-  }
-
-  throwBadRequestError(message: string): void {
-    throw new BadRequestException(message);
-  }
-
-  throwInternalServerError(message: string): void {
-    throw new InternalServerErrorException(message);
-  }
-
-  throwUnauthorizedError(message: string): void {
-    throw new UnauthorizedException(message);
-  }
-
-  throwForbiddenError(message: string): void {
-    throw new ForbiddenException(message);
-  }
-
-  throwConflictError(message: string): void {
-    throw new ConflictException(message);
-  }
-
-  throwGoneError(message: string): void {
-    throw new GoneException(message);
-  }
-
-  throwTeapotError(message: string): void {
-    throw new ImATeapotException(message);
-  }
-
-  throwMethodNotAllowedError(message: string): void {
-    throw new MethodNotAllowedException(message);
-  }
-
-  throwNotAcceptableError(message: string): void {
-    throw new NotAcceptableException(message);
-  }
-
-  throwRequestTimeoutError(message: string): void {
-    throw new RequestTimeoutException(message);
-  }
-
-  throwUnsupportedMediaTypeError(message: string): void {
-    throw new UnsupportedMediaTypeException(message);
-  }
-}
-
-LoggerService : 
-import { Injectable } from '@nestjs/common';
-import * as winston from 'winston';
-import 'winston-daily-rotate-file';
-
-@Injectable()
-export class LoggerService {
-  private logger: winston.Logger;
-  private context?: string;  // The default context
-
-  constructor() {
-    this.logger = winston.createLogger({
-      level: 'info',
-      format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.printf(({ level, message, timestamp, context }) => {
-          return \`[\${level.toUpperCase()}] \${timestamp} \${context ? \`[\${context}]\` : ''} \${message}\`;
-        }),
-      ),
-      transports: [
-        new winston.transports.Console({
-          format: winston.format.combine(
-            winston.format.colorize(),
-            winston.format.simple(),
-          ),
-        }),
-        new winston.transports.DailyRotateFile({
-          filename: 'logs/application-%DATE%.log',
-          datePattern: 'YYYY-MM-DD',
-          maxFiles: '14d',
-        }),
-      ],
-    });
-  }
-
-  // Method to set the default context
-  setContext(context: string): void {
-    this.context = context;
-  }
-
-  // Log methods with optional overriding context
-  log(message: string, context?: string): void {
-    this.logger.info(message, { context: context || this.context });
-  }
-
-  error(message: string, trace?: string, context?: string): void {
-    this.logger.error(\`\${message} - Trace: \${trace}\`, { context: context || this.context });
-  }
-
-  warn(message: string, context?: string): void {
-    this.logger.warn(message, { context: context || this.context });
-  }
-
-  debug(message: string, context?: string): void {
-    this.logger.debug(message, { context: context || this.context });
-  }
-
-  verbose(message: string, context?: string): void {
-    this.logger.verbose(message, { context: context || this.context });
-  }
-}
-
-Entity : 
+Entity (Path: {{entityPath}}): 
 {{entityCode}}
 
-Controller : 
+Controller (Path: {{controllerPath}}): 
 {{controllerCode}}
 
-Service : 
+Service (Path: {{servicePath}}): 
 {{serviceCode}}
 
-Repository : 
-{{repoCode}}
+Error Service (Path: {{errorServicePath}}): 
+{{errorServiceCode}}
+
+Logger Service (Path: {{loggerServicePath}}): 
+{{loggerServiceCode}}
+
+Here’s the revised version:
+
+This folder structure outlines the CQRS module, which manages both commands and queries. The module is organized into handlers and implementations (impl). The **handlers** folder contains the logic responsible for processing commands and queries, while the **impl** folder contains the command and query definitions.
+
+- **Commands Folder:** This folder contains the logic for handling all write, update, and delete operations. Commands and their corresponding handlers are placed here.
+- **Queries Folder:** This folder handles read operations, with query commands and handlers for retrieving data.
+  
+Each handler interacts with the **Repository** to communicate with the database and perform the necessary actions.
+
+### Key Points:
+- **Command or Query Handlers:** When building command or query handlers, ensure you use the **ErrorService** for error handling and the **LoggerService** for logging to support debugging.
+- **Repository:** Any database-related logic, such as data retrieval or updates, should be implemented in the repository file.
+- **Controller:** When creating a controller, include Swagger documentation and support for multipart form data (where applicable) to enable easy API testing in Swagger.
+
+### Workflow:
+Controller => Service => Service triggers the command => Command handler executes the logic and returns a response.
+
+- **DTOs:** When creating or modifying features, ensure proper validation by implementing appropriate DTOs with the necessary validation rules.
+
+**Note:** Whenever you create or modify anything, make sure to incorporate the changes as outlined in this prompt.
 `;
 
 // Utility function to read file content
@@ -199,30 +85,57 @@ const readFileContent = (filePath) => {
   return fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf-8') : null;
 };
 
+// Function to replace placeholders in the template
+const replacePlaceholders = (template, moduleFolderPath, replacements) => {
+  const moduleName = path.basename(moduleFolderPath);
+  
+  // Replace [moduleName], placeholders, and provided replacement values
+  let result = template.replace(/\[moduleName\]/g, moduleName);
+
+  for (const [key, value] of Object.entries(replacements)) {
+    result = result.replace(`{{${key}}}`, value || '');
+  }
+  
+  return result;
+};
+
 // Function to generate the prompt file
 const generatePrompt = (moduleFolderPath) => {
-  const entityPath = path.join(moduleFolderPath, 'entities', 'user.entity.ts');
-  const repoPath = path.join(moduleFolderPath, 'repositories', 'user.repository.ts');
+  const entityPath = path.join(moduleFolderPath, 'entities', `${path.basename(moduleFolderPath)}.entity.ts`);
+  const repoPath = path.join(moduleFolderPath, 'repositories', `${path.basename(moduleFolderPath)}.repository.ts`);
   const controllerPath = path.join(moduleFolderPath, `${path.basename(moduleFolderPath)}.controller.ts`);
   const servicePath = path.join(moduleFolderPath, `${path.basename(moduleFolderPath)}.service.ts`);
+  const errorServicePath = path.join('app', 'backend', 'src', 'services', 'error', 'error.service.ts'); // Relative path to ErrorService
+  const loggerServicePath = path.join('app', 'backend', 'src', 'services', 'logger', 'logger.service.ts'); // Relative path to LoggerService
 
   // Read file contents
   const entityCode = readFileContent(entityPath);
   const controllerCode = readFileContent(controllerPath);
   const serviceCode = readFileContent(servicePath);
   const repoCode = readFileContent(repoPath);
+  const errorServiceCode = readFileContent(errorServicePath);
+  const loggerServiceCode = readFileContent(loggerServicePath);
 
-  if (!entityCode || !controllerCode || !serviceCode || !repoCode) {
-    console.log('Error: One or more required files (entity, controller, service) are missing.');
+  if (!entityCode || !controllerCode || !serviceCode || !repoCode || !errorServiceCode || !loggerServiceCode) {
+    console.log('Error: One or more required files (entity, controller, service, error service, logger service) are missing.');
     return;
   }
 
-  // Replace placeholders in the template
-  const finalPrompt = template
-    .replace('{{entityCode}}', entityCode)
-    .replace('{{controllerCode}}', controllerCode)
-    .replace('{{serviceCode}}', serviceCode)
-    .replace('{{repoCode}}', repoCode);
+  // Replace placeholders in the template with file contents and relative paths
+  const finalPrompt = replacePlaceholders(template, moduleFolderPath, {
+    entityCode,
+    controllerCode,
+    serviceCode,
+    repoCode,
+    errorServiceCode,
+    loggerServiceCode,
+    entityPath: path.relative('app', entityPath), // Make path relative to 'app'
+    controllerPath: path.relative('app', controllerPath),
+    servicePath: path.relative('app', servicePath),
+    repoPath: path.relative('app', repoPath),
+    errorServicePath: path.relative('app', errorServicePath),
+    loggerServicePath: path.relative('app', loggerServicePath)
+  });
 
   // Write the final prompt to a file
   fs.writeFileSync(path.join(moduleFolderPath, 'prompt.txt'), finalPrompt);
