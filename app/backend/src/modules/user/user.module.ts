@@ -30,5 +30,6 @@ import { JwtModule } from 'src/services/jwt/jwt.module';
     ...UserCommandHandlers,
     ...UserQueryHandlers,
   ],
+  exports:[UserRepository]
 })
 export class UserModule {}

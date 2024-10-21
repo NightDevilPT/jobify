@@ -11,4 +11,36 @@ export class ProfileRepository extends BaseRepository<Profile> {
   ) {
     super(profileModel);
   }
+
+  // Find a profile by profile ID
+  async findProfileById(profileId: string, populateUser = false): Promise<Profile | null> {
+    const query = this.profileModel.findById(profileId);
+
+    if (populateUser) {
+      query.populate({
+        path: 'user',
+        select: 'username email',
+        options: { autopopulate: false },
+      });
+    }
+
+    return query.exec();
+  }
+
+  // Update profile and populate user without profile recursion
+  async updateProfile(profileId: string, updateData: Partial<Profile>, populateUser = false): Promise<Profile | null> {
+    const updatedProfile = await this.profileModel
+      .findByIdAndUpdate(profileId, updateData, { new: true })
+      .exec();
+
+    if (populateUser && updatedProfile) {
+      await updatedProfile.populate({
+        path: 'user',
+        select: 'username email',
+        options: { autopopulate: false },
+      });
+    }
+
+    return updatedProfile;
+  }
 }
