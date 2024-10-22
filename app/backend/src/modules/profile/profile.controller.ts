@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
@@ -16,6 +16,17 @@ import { UserRequest } from 'src/common/interfaces/common.interface';
 @Controller('profile')
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
+
+  @Get(':profileId')
+  @ApiOperation({ summary: 'Get a profile by ID' })
+  @ApiParam({
+    name: 'profileId',
+    description: 'ID of the profile to retrieve',
+    type: String,
+  })
+  async getProfileById(@Param('profileId') profileId: string): Promise<any> {
+    return this.profileService.getProfileById(profileId);
+  }
 
   @Post()
   @ApiConsumes('application/x-www-form-urlencoded', 'multipart/form-data')

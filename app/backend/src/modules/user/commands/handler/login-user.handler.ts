@@ -26,12 +26,18 @@ export class LoginUserHandler implements ICommandHandler<LoginUserCommand> {
 
     // Find user by email
     const user = await this.userRepository.findByEmail(email);
+    console.log(user,'user data')
 
     if (!user) {
       // Log the error before throwing it
       this.loggerService.error(`User not found for email: ${email}`);
       this.errorService.throwNotFoundError('User not found');
     }
+
+    if (!user.isVerified) {
+      this.loggerService.error(`User email not verified: ${user.email}`);
+      this.errorService.throwUnauthorizedError('User email is not verified');
+    }    
 
     // Verify the password using HashService
     const isPasswordValid = await this.hashService.verifyPassword(password, user.password);
