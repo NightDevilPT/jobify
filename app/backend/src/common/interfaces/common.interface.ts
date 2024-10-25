@@ -44,3 +44,9 @@ export enum Industry {
 
 export enum HistoryEventType {
 }
+
+export interface UserRequest {
+  email:string;
+  userId:string;
+} 
+

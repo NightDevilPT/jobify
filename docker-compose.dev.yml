@@ -33,7 +33,7 @@ services:
             - NODE_ENV=development
             - MONGODB_URI=mongodb://root:root@127.0.0.1:27018/jobify?authSource=admin
             - CHOKIDAR_USEPOLLING=true
-        command: npx nodemon --watch src --exec "npm run start:dev" 
+        command: npx nodemon --watch src --exec "npm run start:dev"
         depends_on:
             - mongodb
         deploy:
@@ -57,9 +57,21 @@ services:
             - mongo-data:/data/db
             - mongo-config:/data/configdb
 
+    redis:
+        image: "redis:alpine"
+        container_name: redis-cache
+        ports:
+            - "6379:6379"
+        networks:
+            - cache
+        volumes:
+            - redis-data:/data
+
 volumes:
     mongo-data:
     mongo-config:
+    redis-data:
 
 networks:
     mongo:
+    cache:

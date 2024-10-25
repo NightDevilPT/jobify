@@ -35,15 +35,15 @@ export class Profile extends Document {
 
   @ApiProperty({ type: [Experience], description: 'List of experiences related to the profile' })
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Experience', autopopulate: true }] })
-  experiences: Experience[];
+  experiences?: Experience[];
 
   @ApiProperty({ type: [Education], description: 'List of education records related to the profile' })
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Education', autopopulate: true }] })
-  education: Education[];
+  education?: Education[];
 
   @ApiProperty({ type: [History], description: 'History of changes to the profile' })
   @Prop({ type: [{ type: Types.ObjectId, ref: 'History', autopopulate: true }] }) // One-to-Many relation with History
-  history: Types.ObjectId[];
+  history?: Types.ObjectId[];
 }
 
 export const ProfileSchema = SchemaFactory.createForClass(Profile);

@@ -16,15 +16,15 @@ export class User extends Document {
   email: string;
 
   @ApiProperty({ description: 'Password of the user' })
-  @Prop({ required: true })
+  @Prop({ required: true,select:false })
   password: string;
 
   @ApiProperty({ description: 'JWT token for the user' })
-  @Prop()
+  @Prop({select:false})
   token: string;
 
   @ApiProperty({ description: 'Whether the user is verified' })
-  @Prop({ default: false })
+  @Prop({ default: false,select:false })
   isVerified: boolean;
 
   @ApiProperty({ enum: UserType, description: 'Type of user (Recruiter or Candidate)' })

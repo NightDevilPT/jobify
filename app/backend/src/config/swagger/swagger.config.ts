@@ -7,7 +7,11 @@ export class SwaggerConfig {
       .setTitle('Job Application')
       .setDescription('API description')
       .setVersion('1.0')
-      .addBearerAuth()  // If using JWT Auth
+      .addCookieAuth('authCookie', {
+        type: 'http',
+        in: 'Cookie',
+        scheme: 'Bearer',
+      },'cookie-auth')
       .build();
 
     const document = SwaggerModule.createDocument(app, config);

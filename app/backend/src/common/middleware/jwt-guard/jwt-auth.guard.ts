@@ -8,23 +8,18 @@ export class JwtAuthMiddleware implements NestMiddleware {
   constructor(private readonly jwtService: JwtService) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-    const authHeader = req.headers.authorization;
+    const token = req.cookies?.jwt;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      throw new UnauthorizedException('Authorization header missing or malformed');
+    if (!token) {
+      throw new UnauthorizedException('Authorization token missing.');
     }
 
-    const token = authHeader.split(' ')[1];
-
     try {
-      // Verify the token using your custom JwtService
-      const decoded = await this.jwtService.verifyToken(token);
-
-      // Attach the decoded user to the request object
+      const decoded = await this.jwtService.decodeToken(token);
       req.user = decoded;
       next();
     } catch (error) {
-      throw new UnauthorizedException('Invalid or expired token');
+      throw new UnauthorizedException('Invalid or expired token.');
     }
   }
 }

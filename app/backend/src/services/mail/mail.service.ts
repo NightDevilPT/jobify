@@ -24,4 +24,8 @@ export class MailService {
     const mailService = this.mailFactory.getMailService();
     await mailService.sendMail(to, 'Account Deletion Request', 'delete.template', { username, token });
   }
+
+  async sendResetPasswordEmail(email: string, resetUrl: string): Promise<void> {
+    // Send the reset password email
+  }
 }

@@ -13,6 +13,13 @@ export class UserRepository extends BaseRepository<User> {
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    return this.userModel.findOne({ email }).exec();
+    return this.userModel
+      .findOne({ email })
+      .select('+password +isVerified') // Explicitly include the password and isVerified fields
+      .exec();
+  }  
+
+  async findByToken(token: string): Promise<User | null> {
+    return this.userModel.findOne({ token }).exec();
   }
 }

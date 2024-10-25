@@ -11,6 +11,7 @@ import { LoggerModule } from 'src/services/logger/logger.module';
 import { UserRepository } from './repositories/user.repository';
 import { HashModule } from 'src/services/hash/hash.module';
 import { MailModule } from 'src/services/mail/mail.module';
+import { JwtModule } from 'src/services/jwt/jwt.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { MailModule } from 'src/services/mail/mail.module';
     ErrorModule,
     LoggerModule,
     HashModule,
-    MailModule
+    MailModule,
+    JwtModule
   ],
   controllers: [UserController],
   providers: [
@@ -28,5 +30,6 @@ import { MailModule } from 'src/services/mail/mail.module';
     ...UserCommandHandlers,
     ...UserQueryHandlers,
   ],
+  exports:[UserRepository]
 })
 export class UserModule {}
