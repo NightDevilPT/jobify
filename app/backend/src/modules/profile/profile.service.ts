@@ -5,6 +5,7 @@ import { CreateProfileCommand } from './commands/impl/create-profile.command';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { UpdateProfileCommand } from './commands/impl/update-profile.command';
 import { GetProfileByIdQuery } from './queries/impl/get-profile-by-id.query';
+import { GetAllProfilesQuery } from './queries/impl/get-all-profiles.query';
 
 @Injectable()
 export class ProfileService {
@@ -24,5 +25,11 @@ export class ProfileService {
 
   async getProfileById(profileId: string) {
     return this.queryBus.execute(new GetProfileByIdQuery(profileId));
+  }
+
+  async getAllProfiles(filters: any, page: number, limit: number) {
+    return this.queryBus.execute(
+      new GetAllProfilesQuery(filters, page, limit),
+    );
   }
 }

@@ -22,7 +22,7 @@ export class ProfileRepository extends BaseRepository<Profile> {
     if (populateUser && profile) {
       await profile.populate({
         path: 'user',
-        select: 'username email',
+        select: 'username email userType',
         options: { autopopulate: false },
       });
     }
@@ -43,11 +43,48 @@ export class ProfileRepository extends BaseRepository<Profile> {
     if (populateUser && updatedProfile) {
       await updatedProfile.populate({
         path: 'user',
-        select: 'username email',
+        select: 'username email userType',
         options: { autopopulate: false },
       });
     }
 
     return updatedProfile;
   }
+
+  async findAllProfiles(
+    filters: any,
+    page: number,
+    limit: number,
+    populateUser = false, // New parameter to control population
+  ): Promise<{ profiles: Profile[]; totalCount: number }> {
+    const skip = (page - 1) * limit;
+  
+    // Fetch profiles with pagination
+    const profiles = await this.profileModel.find(filters).skip(skip).limit(limit).exec();
+    const totalCount = await this.profileModel.countDocuments(filters).exec();
+  
+    // Populate the 'user' field for each profile if populateUser is true
+    if (populateUser) {
+      // Use Promise.all to handle the asynchronous population of each profile
+      const populatedProfiles = await Promise.all(
+        profiles.map(profile => profile.populate({
+          path: 'user',
+          select: 'username email userType',
+          options: { autopopulate: false },
+        }))
+      );
+      
+      return {
+        profiles: populatedProfiles.map(profile => profile.toObject()),
+        totalCount,
+      };
+    }
+  
+    // If no population is needed, just return the profiles as objects
+    return {
+      profiles: profiles.map(profile => profile.toObject()),
+      totalCount,
+    };
+  }
+  
 }
