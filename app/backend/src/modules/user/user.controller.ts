@@ -5,6 +5,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { BaseResponse } from 'src/common/interfaces/response';
 import { LoginUserDto } from './dto/login-user.dto';
 import { SetCookieInterceptor } from 'src/common/middleware/set-cookie/set-cookie.interceptor';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @ApiTags('User')
 @Controller('user')
@@ -35,5 +37,24 @@ export class UserController {
   @UseInterceptors(SetCookieInterceptor) // Apply the interceptor to the login route
   async login(@Body() loginUserDto: LoginUserDto): Promise<BaseResponse> {
     return this.userService.loginUser(loginUserDto);
+  }
+
+  @Post('forgot-password')
+  @ApiConsumes('application/x-www-form-urlencoded', 'multipart/form-data')
+  @ApiResponse({ status: 200, description: 'Forgot password request processed' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto): Promise<BaseResponse> {
+    return this.userService.forgotPassword(forgotPasswordDto);
+  }
+
+  @Post('update-password')
+  @ApiConsumes('application/x-www-form-urlencoded', 'multipart/form-data')
+  @ApiResponse({ status: 200, description: 'Password updated successfully' })
+  @ApiResponse({ status: 401, description: 'Invalid or expired token' })
+  async updatePassword(
+    @Query('token') token: string, // Token will be passed in the query string
+    @Body() updatePasswordDto: UpdatePasswordDto,
+  ): Promise<BaseResponse> {
+    return this.userService.updatePassword(token, updatePasswordDto);
   }
 }
