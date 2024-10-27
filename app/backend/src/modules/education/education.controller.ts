@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Put, Delete, Param } from '@nestjs/common';
+import { Body, Controller, Post, Put, Delete, Param, Get } from '@nestjs/common';
 import { EducationService } from './education.service';
 import { CreateEducationDto } from './dto/create-education.dto';
 import { UpdateEducationDto } from './dto/update-education.dto';
@@ -11,6 +11,12 @@ import { User } from 'src/common/decorator/jwt-payload.decorator';
 @Controller('education')
 export class EducationController {
   constructor(private readonly educationService: EducationService) {}
+
+  @Get()
+  @ApiOperation({ summary: 'Get all education records for a profile' })
+  async getEducationsByProfileId(@User() user: UserRequest,) {
+    return this.educationService.getEducationsByProfileId(user.userId);
+  }
 
   @Post()
   @ApiConsumes('application/x-www-form-urlencoded', 'multipart/form-data')
