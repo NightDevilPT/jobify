@@ -48,16 +48,16 @@ export class CreateProfileHandler
       gender,
       address,
       description,
-      user: userId,
+      user:user._id
     });
 
     // Update the user to reference the created profile
-    user.profile = newProfile;
+    user.profile = newProfile?._id;
     await this.userRepository.update(userId, user);
 
     this.logger.log(
       `Profile created successfully and associated with user ID: ${userId}`,
     );
-    return newProfile.toObject();
+    return newProfile;
   }
 }

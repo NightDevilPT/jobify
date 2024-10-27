@@ -26,7 +26,6 @@ export class LoginUserHandler implements ICommandHandler<LoginUserCommand> {
 
     // Find user by email
     const user = await this.userRepository.findByEmail(email);
-    console.log(user,'user data')
 
     if (!user) {
       // Log the error before throwing it

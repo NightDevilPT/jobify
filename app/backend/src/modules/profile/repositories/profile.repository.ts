@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { BaseRepository } from 'src/common/repositories/base.repository';
 import { Profile } from '../entities/profile.entity';
 
@@ -14,7 +14,7 @@ export class ProfileRepository extends BaseRepository<Profile> {
 
   // Retrieve a profile by its ID
   async findProfileById(
-    profileId: string,
+    profileId: Types.ObjectId,
     populateUser = false,
   ): Promise<Profile | null> {
     const profile = await this.profileModel.findById(profileId).exec();
@@ -32,7 +32,7 @@ export class ProfileRepository extends BaseRepository<Profile> {
 
   // Update a profile and optionally populate the user without causing recursion
   async updateProfile(
-    profileId: string,
+    profileId: Types.ObjectId,
     updateData: Partial<Profile>,
     populateUser = false,
   ): Promise<Profile | null> {
@@ -55,16 +55,22 @@ export class ProfileRepository extends BaseRepository<Profile> {
     filters: any,
     page: number,
     limit: number,
-    populateUser = false // New parameter to control population
+    populateUser = false, // New parameter to control population
   ): Promise<{ data: Profile[]; totalCount: number }> {
     const populateOptions = populateUser
       ? {
-        path: 'user',
-        select: 'username email userType',
-        options: { autopopulate: false },
-      }
+          path: 'user',
+          select: 'username email userType',
+          options: { autopopulate: false },
+        }
       : null;
-  
+
     return super.findAll(filters, page, limit, populateOptions);
   }
+
+  async findByUserId(userId: string): Promise<Profile | null> {
+    const findProfile = await this.profileModel.find({where:{user:{_id:userId}}}).exec()  
+    return findProfile ? findProfile[0] : null; // Convert to plain object if found, or return null
+  }
+  
 }
