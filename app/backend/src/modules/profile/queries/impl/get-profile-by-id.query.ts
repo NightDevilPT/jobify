@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export class GetProfileByIdQuery {
-	constructor(public readonly profileId: string) {}
+	constructor(public readonly profileId: Types.ObjectId) {}
   }

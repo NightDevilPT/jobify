@@ -12,6 +12,7 @@ import {
 } from '@nestjs/swagger';
 import { User } from 'src/common/decorator/jwt-payload.decorator';
 import { UserRequest } from 'src/common/interfaces/common.interface';
+import { Types } from 'mongoose';
 
 @ApiTags('Profile')
 @Controller('profile')
@@ -25,7 +26,7 @@ export class ProfileController {
     description: 'ID of the profile to retrieve',
     type: String,
   })
-  async getProfileById(@Param('profileId') profileId: string): Promise<any> {
+  async getProfileById(@Param('profileId') profileId: Types.ObjectId): Promise<any> {
     return this.profileService.getProfileById(profileId);
   }
 
@@ -62,7 +63,7 @@ export class ProfileController {
     @User() user: UserRequest,
   ): Promise<any> {
     const { userId } = user;
-    return this.profileService.createProfile(createProfileDto, userId);
+    return this.profileService.createProfile(createProfileDto, userId as any);
   }
 
   @Put(':profileId')
@@ -76,7 +77,7 @@ export class ProfileController {
   })
   async updateProfile(
     @Body() updateProfileDto: UpdateProfileDto,
-    @Param('profileId') profileId: string,
+    @Param('profileId') profileId: Types.ObjectId,
   ): Promise<any> {
     return this.profileService.updateProfile(updateProfileDto, profileId);
   }

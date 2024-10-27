@@ -6,9 +6,7 @@ import { User } from '../entities/user.entity';
 
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
-  constructor(
-    @InjectModel(User.name) private readonly userModel: Model<User>,
-  ) {
+  constructor(@InjectModel(User.name) private readonly userModel: Model<User>) {
     super(userModel);
   }
 
@@ -17,9 +15,17 @@ export class UserRepository extends BaseRepository<User> {
       .findOne({ email })
       .select('+password +isVerified') // Explicitly include the password and isVerified fields
       .exec();
-  }  
+  }
 
   async findByToken(token: string): Promise<User | null> {
     return this.userModel.findOne({ token }).exec();
+  }
+
+  async findUserWithProfile(
+    userId: string | Types.ObjectId,
+  ): Promise<User | null> {
+    const userProfile = await this.userModel.findById(userId);
+
+    return userProfile;
   }
 }

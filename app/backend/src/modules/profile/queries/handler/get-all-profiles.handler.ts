@@ -21,7 +21,7 @@ export class GetAllProfilesHandler implements IQueryHandler<GetAllProfilesQuery>
     this.logger.log('Initiating the process to fetch all profiles with filters and pagination.');
 
     try {
-      const { profiles, totalCount } = await this.profileRepository.findAllProfiles(filters, page, limit, true);
+      const { data, totalCount } = await this.profileRepository.findAllProfiles(filters, page, limit, true);
 
       const totalPages = Math.ceil(totalCount / limit);
       const meta = {
@@ -33,10 +33,10 @@ export class GetAllProfilesHandler implements IQueryHandler<GetAllProfilesQuery>
       };
 
       // Log the successful retrieval of profiles
-      this.logger.log(`Successfully retrieved ${profiles.length} profiles. Total profiles available: ${totalCount}`);
+      this.logger.log(`Successfully retrieved ${data.length} profiles. Total profiles available: ${totalCount}`);
 
       return { 
-        data: profiles, 
+        data, 
         meta, 
         message: 'Profiles have been successfully retrieved.' 
       };
