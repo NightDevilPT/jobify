@@ -8,6 +8,7 @@ import { ErrorService } from 'src/services/error/error.service';
 import { Education } from '../../entities/education.entity';
 import { Types } from 'mongoose';
 import { UserRepository } from 'src/modules/user/repositories/user.repository';
+import { ProfileRepository } from 'src/modules/profile/repositories/profile.repository';
 
 @QueryHandler(GetEducationsByProfileIdQuery)
 export class GetEducationsByProfileIdHandler
@@ -16,25 +17,28 @@ export class GetEducationsByProfileIdHandler
   constructor(
     private readonly educationRepository: EducationRepository,
     private readonly userRepository: UserRepository,
+    private readonly profileRepository: ProfileRepository,
     private readonly logger: LoggerService,
     private readonly errorService: ErrorService,
   ) {}
 
-  async execute(query: GetEducationsByProfileIdQuery): Promise<{educations:Education[]}> {
+  async execute(
+    query: GetEducationsByProfileIdQuery,
+  ): Promise<{ educations: Education[] } | any> {
     const { userId } = query;
     const { profile } = await this.userRepository.findUserWithProfile(userId);
     try {
       // Fetch all education entries associated with the given profileId
-      const educations = await this.educationRepository.getEducationForProfile(
-        profile?._id as Types.ObjectId,
+      const {education} = await this.profileRepository.findProfileEducationByUserId(
+        new Types.ObjectId(userId),
       );
 
       // Log successful retrieval
       this.logger.log(
-        `Successfully fetched ${educations.length} education records for profile ID: ${profile?._id}`,
+        `Successfully fetched ${education.length} education records for profile ID: ${profile?._id}`,
       );
 
-      return { educations };
+      return { educations:education };
     } catch (error) {
       this.logger.error(
         `An error occurred while fetching education records for profile ID: ${profile?._id}`,

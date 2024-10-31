@@ -39,15 +39,11 @@ export class EducationRepository extends BaseRepository<Education> {
   }
 
   async getEducationForProfile(profileId: Types.ObjectId): Promise<Education[]> {
-    console.log(profileId.toString(), 'profileId');
     const educationRecords = await this.educationModel
       .find({ profile: profileId })
       .select('degree institution startDate endDate isCurrent') // Select only relevant fields
       .lean()
       .exec();
-    console.log(Array.isArray(educationRecords), educationRecords);
-
-  
     return educationRecords;
   }  
 }

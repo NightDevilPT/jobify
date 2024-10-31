@@ -68,9 +68,20 @@ export class ProfileRepository extends BaseRepository<Profile> {
     return super.findAll(filters, page, limit, populateOptions);
   }
 
-  async findByUserId(userId: string): Promise<Profile | null> {
-    const findProfile = await this.profileModel.find({where:{user:{_id:userId}}}).exec()  
-    return findProfile ? findProfile[0] : null; // Convert to plain object if found, or return null
+  async findProfileEducationByUserId(
+    userId: Types.ObjectId,
+  ): Promise<Partial<Profile> | null> {
+    const profile = await this.profileModel
+      .findOne({ user: userId })
+      .populate({
+        path: 'education',
+        model: 'Education',
+        select: 'degree institution startDate endDate isCurrent',
+      })
+      .select('-user')
+      .lean()
+      .exec();
+
+    return profile ? profile : null;
   }
-  
 }
