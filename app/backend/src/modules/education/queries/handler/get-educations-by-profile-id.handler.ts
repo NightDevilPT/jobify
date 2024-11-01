@@ -29,9 +29,7 @@ export class GetEducationsByProfileIdHandler
     const { profile } = await this.userRepository.findUserWithProfile(userId);
     try {
       // Fetch all education entries associated with the given profileId
-      const {education} = await this.profileRepository.findProfileEducationByUserId(
-        new Types.ObjectId(userId),
-      );
+      const education = await this.educationRepository.getEducationForProfile(profile?._id as Types.ObjectId)
 
       // Log successful retrieval
       this.logger.log(
