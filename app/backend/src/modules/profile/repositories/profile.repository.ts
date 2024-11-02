@@ -84,4 +84,23 @@ export class ProfileRepository extends BaseRepository<Profile> {
 
     return profile ? profile : null;
   }
+
+  async findProfileByUserId(
+    userId: Types.ObjectId,
+    populatePaths?: string[],
+  ): Promise<Partial<Profile> | null> {
+    const query = this.profileModel.findOne({ user: userId }).lean();
+
+    if (populatePaths && populatePaths.length > 0) {
+      populatePaths.forEach((path) => {
+        query.populate({
+          path: path,
+          options: { autopopulate: false,strictPopulate: false },
+        });
+      });
+    }
+
+    const profile = await query.exec();
+    return profile ? profile : null;
+  }
 }

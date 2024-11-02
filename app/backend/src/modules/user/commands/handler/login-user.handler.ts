@@ -47,7 +47,7 @@ export class LoginUserHandler implements ICommandHandler<LoginUserCommand> {
     }
 
     // Generate JWT token using JwtService
-    const token = await this.jwtService.signToken({ userId: user._id, email: user.email });
+    const token = await this.jwtService.signToken({ userId: user._id, email: user.email,role:user.userType });
 
     // Log successful login and token generation
     this.loggerService.log(`User ${email} logged in successfully. JWT token generated.`);

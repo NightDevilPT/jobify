@@ -34,7 +34,7 @@ export class Profile extends Document {
   user: Types.ObjectId | User;
 
   @ApiProperty({ type: [Experience], description: 'List of experiences related to the profile' })
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Experience', autopopulate: true }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Experience', autopopulate: false }] })
   experiences?: Experience[];
 
   @ApiProperty({ type: [Education], description: 'List of education records related to the profile' })

@@ -38,7 +38,7 @@ export class Experience extends Document {
   technologies: string[];
 
   @ApiProperty({ description: 'Associated profile for this Exterience record', type: () => Profile })
-  @Prop({ type: Types.ObjectId, ref: 'Profile', required: true, autopopulate: true })
+  @Prop({ type: Types.ObjectId, ref: 'Profile', required: true, autopopulate: false })
   profile: Types.ObjectId;
 }
 
