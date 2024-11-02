@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
+import { Profile } from 'src/modules/profile/entities/profile.entity';
 
 @Schema({ timestamps: true })
 export class Experience extends Document {
@@ -35,6 +36,10 @@ export class Experience extends Document {
   @ApiProperty({ description: 'Technologies used during the experience' })
   @Prop([String])
   technologies: string[];
+
+  @ApiProperty({ description: 'Associated profile for this Exterience record', type: () => Profile })
+  @Prop({ type: Types.ObjectId, ref: 'Profile', required: true, autopopulate: false })
+  profile: Types.ObjectId;
 }
 
 export const ExperienceSchema = SchemaFactory.createForClass(Experience);

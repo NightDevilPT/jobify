@@ -26,9 +26,9 @@ export class Education extends Document {
   @Prop({ default: false })
   isCurrent: boolean;
 
-  @ApiProperty({ description: 'Associated profile for this education record', type: () => Profile })
+  @ApiProperty({ description: 'Associated profile for this education record' })
   @Prop({ type: Types.ObjectId, ref: 'Profile', required: true, autopopulate: true })
-  profile: Types.ObjectId;
+  profile: Profile;
 }
 
 export const EducationSchema = SchemaFactory.createForClass(Education);

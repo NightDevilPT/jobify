@@ -29,20 +29,20 @@ export class Profile extends Document {
   @Prop()
   description: string;
 
-  @ApiProperty({ type: User })
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true, autopopulate: true }) // One-to-One relation
-  user: User;
+  @ApiProperty({ type: () => User, description: 'Associated user account' })
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true, autopopulate: false }) // One-to-One relation with User
+  user: Types.ObjectId | User;
 
   @ApiProperty({ type: [Experience], description: 'List of experiences related to the profile' })
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Experience', autopopulate: true }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Experience', autopopulate: false }] })
   experiences?: Experience[];
 
   @ApiProperty({ type: [Education], description: 'List of education records related to the profile' })
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Education', autopopulate: true }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Education', autopopulate: false }] })
   education?: Education[];
 
   @ApiProperty({ type: [History], description: 'History of changes to the profile' })
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'History', autopopulate: true }] }) // One-to-Many relation with History
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'History', autopopulate: false }] }) // One-to-Many relation with History
   history?: Types.ObjectId[];
 }
 

@@ -32,7 +32,7 @@ export class User extends Document {
   userType: UserType;
 
   @ApiProperty({ type: Profile })
-  @Prop({ type: Types.ObjectId, ref: 'Profile', autopopulate: true }) // One-to-One Relation
+  @Prop({ type: Types.ObjectId, ref: 'Profile', autopopulate: false }) // One-to-One Relation
   profile?: Profile;
 }
 
