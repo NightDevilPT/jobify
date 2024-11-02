@@ -26,7 +26,6 @@ export class LoginUserHandler implements ICommandHandler<LoginUserCommand> {
 
     // Find user by email
     const user = await this.userRepository.findByEmail(email);
-    console.log(user,'user data')
 
     if (!user) {
       // Log the error before throwing it
@@ -48,7 +47,7 @@ export class LoginUserHandler implements ICommandHandler<LoginUserCommand> {
     }
 
     // Generate JWT token using JwtService
-    const token = await this.jwtService.signToken({ userId: user._id, email: user.email });
+    const token = await this.jwtService.signToken({ userId: user._id, email: user.email,role:user.userType });
 
     // Log successful login and token generation
     this.loggerService.log(`User ${email} logged in successfully. JWT token generated.`);

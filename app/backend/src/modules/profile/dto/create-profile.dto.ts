@@ -23,8 +23,7 @@ export class CreateProfileDto {
 
   @ApiProperty({
     description: 'Gender of the user',
-    enum: Gender,
-    example: 'Male',
+    enum: Gender
   })
   @IsEnum(Gender, { message: 'Invalid gender provided' })
   @IsNotEmpty({ message: 'Gender is required' })

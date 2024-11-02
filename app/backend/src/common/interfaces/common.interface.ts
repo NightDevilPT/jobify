@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export enum UserType {
   RECRUITER = 'RECRUITER',
   CANDIDATE = 'CANDIDATE',
@@ -35,7 +37,7 @@ export enum DegreeEnum {
   VOCATIONAL = 'VOCATIONAL',
 }
 
-export enum Industry {
+export enum IndustryEnum {
   TECH = 'TECH',
   FINANCE = 'FINANCE',
   HEALTHCARE = 'HEALTHCARE',
@@ -47,6 +49,6 @@ export enum HistoryEventType {
 
 export interface UserRequest {
   email:string;
-  userId:string;
+  userId:Types.ObjectId;
 } 
 
