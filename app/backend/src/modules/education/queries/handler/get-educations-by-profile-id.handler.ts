@@ -29,14 +29,17 @@ export class GetEducationsByProfileIdHandler
     const { profile } = await this.userRepository.findUserWithProfile(userId);
     try {
       // Fetch all education entries associated with the given profileId
-      const education = await this.educationRepository.getEducationForProfile(profile?._id as Types.ObjectId)
+      const { education } = await this.profileRepository.findProfileByUserId(
+        new Types.ObjectId(userId),
+        ['education'],
+      );
 
       // Log successful retrieval
       this.logger.log(
         `Successfully fetched ${education.length} education records for profile ID: ${profile?._id}`,
       );
 
-      return { educations:education };
+      return { educations: education };
     } catch (error) {
       this.logger.error(
         `An error occurred while fetching education records for profile ID: ${profile?._id}`,

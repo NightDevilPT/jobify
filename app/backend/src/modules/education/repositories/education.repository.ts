@@ -45,5 +45,5 @@ export class EducationRepository extends BaseRepository<Education> {
       .lean()
       .exec();
     return educationRecords;
-  }  
+  }
 }
