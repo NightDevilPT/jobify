@@ -50,5 +50,6 @@ export enum HistoryEventType {
 export interface UserRequest {
   email:string;
   userId:Types.ObjectId;
+  role:UserType
 } 
 
