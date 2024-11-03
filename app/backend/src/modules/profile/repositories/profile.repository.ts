@@ -85,22 +85,23 @@ export class ProfileRepository extends BaseRepository<Profile> {
     return profile ? profile : null;
   }
 
-  async findProfileByUserId(
+   async findProfileByUserId(
     userId: Types.ObjectId,
-    populatePaths?: string[],
-  ): Promise<Partial<Profile> | null> {
-    const query = this.profileModel.findOne({ user: userId }).lean();
+    populatePaths: string[] = [],
+  ): Promise<Profile | null> {
+    const query = this.profileModel.findOne({ user: userId });
 
+    // Apply population for requested paths only
     if (populatePaths && populatePaths.length > 0) {
       populatePaths.forEach((path) => {
         query.populate({
           path: path,
-          options: { autopopulate: false,strictPopulate: false },
+          model: path === 'education' ? 'Education' : undefined,
+          options: { autopopulate: false, strictPopulate: false },
         });
       });
     }
 
-    const profile = await query.exec();
-    return profile ? profile : null;
+    return query.lean().exec();
   }
 }

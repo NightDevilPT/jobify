@@ -6,6 +6,7 @@ import { Gender } from 'src/common/interfaces/common.interface';
 import { History } from 'src/modules/history/entities/history.entity';
 import { Education } from 'src/modules/education/entities/education.entity';
 import { Experience } from 'src/modules/experience/entities/experience.entity';
+import { Company } from 'src/modules/company/entities/company.entity';
 
 @Schema({ timestamps: true })
 export class Profile extends Document {
@@ -32,6 +33,10 @@ export class Profile extends Document {
   @ApiProperty({ type: () => User, description: 'Associated user account' })
   @Prop({ type: Types.ObjectId, ref: 'User', required: true, autopopulate: false }) // One-to-One relation with User
   user: Types.ObjectId | User;
+
+  @ApiProperty({ type: () => Company, description: 'Company associated with the profile' })
+  @Prop({ type: Types.ObjectId, ref: 'Company', autopopulate: false }) // One-to-One relation with Company
+  company?: Types.ObjectId | Company;
 
   @ApiProperty({ type: [Experience], description: 'List of experiences related to the profile' })
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Experience', autopopulate: false }] })
