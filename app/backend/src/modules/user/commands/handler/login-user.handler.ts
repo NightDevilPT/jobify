@@ -4,7 +4,7 @@ import { ErrorService } from 'src/services/error/error.service';
 import { HashService } from 'src/services/hash/hash.service';
 import { UserRepository } from '../../repositories/user.repository';
 import { JwtService } from 'src/services/jwt/jwt.service';
-import { LoggerService } from 'src/services/logger/logger.service';  // Import the LoggerService
+import { LoggerService } from 'src/services/logger/logger.service'; // Import the LoggerService
 
 @CommandHandler(LoginUserCommand)
 export class LoginUserHandler implements ICommandHandler<LoginUserCommand> {
@@ -13,9 +13,9 @@ export class LoginUserHandler implements ICommandHandler<LoginUserCommand> {
     private readonly hashService: HashService,
     private readonly jwtService: JwtService,
     private readonly errorService: ErrorService,
-    private readonly loggerService: LoggerService  // Inject the LoggerService
+    private readonly loggerService: LoggerService, // Inject the LoggerService
   ) {
-    this.loggerService.setContext('LoginUserHandler');  // Set default logging context for the handler
+    this.loggerService.setContext('LoginUserHandler'); // Set default logging context for the handler
   }
 
   async execute(command: LoginUserCommand): Promise<{ token: string }> {
@@ -36,10 +36,13 @@ export class LoginUserHandler implements ICommandHandler<LoginUserCommand> {
     if (!user.isVerified) {
       this.loggerService.error(`User email not verified: ${user.email}`);
       this.errorService.throwUnauthorizedError('User email is not verified');
-    }    
+    }
 
     // Verify the password using HashService
-    const isPasswordValid = await this.hashService.verifyPassword(password, user.password);
+    const isPasswordValid = await this.hashService.verifyPassword(
+      password,
+      user.password,
+    );
     if (!isPasswordValid) {
       // Log the password mismatch
       this.loggerService.warn(`Invalid password attempt for email: ${email}`);
@@ -47,10 +50,16 @@ export class LoginUserHandler implements ICommandHandler<LoginUserCommand> {
     }
 
     // Generate JWT token using JwtService
-    const token = await this.jwtService.signToken({ userId: user._id, email: user.email,role:user.userType });
+    const token = await this.jwtService.signToken({
+      userId: user._id,
+      email: user.email,
+      role: user.userType,
+    });
 
     // Log successful login and token generation
-    this.loggerService.log(`User ${email} logged in successfully. JWT token generated.`);
+    this.loggerService.log(
+      `User ${email} logged in successfully. JWT token generated.`,
+    );
 
     return { token };
   }

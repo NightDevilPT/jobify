@@ -23,12 +23,16 @@ export class Company extends Document {
   description: string;
 
   @ApiProperty({ type: Profile, description: 'Profile who created the company' })
-  @Prop({ type: Types.ObjectId, ref: 'Profile', required: true, autopopulate: true })
+  @Prop({ type: Types.ObjectId, ref: 'Profile', required: true, autopopulate: false })
   createdBy: Profile;
 
   @ApiProperty({ type: [Job], description: 'List of jobs posted by the company' })
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Job', autopopulate: true }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Job', autopopulate: false }] })
   jobs: Job[];
+
+  @ApiProperty({ type: () => Profile, description: 'Associated profile for this company' })
+  @Prop({ type: Types.ObjectId, ref: 'Profile', autopopulate: false }) // One-to-One relation with Profile
+  profile: Profile | null;
 
   @ApiProperty({ description: 'Timestamp when the message was created' })
   createdAt: Date;
