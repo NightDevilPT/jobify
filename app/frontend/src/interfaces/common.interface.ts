@@ -1,0 +1,4 @@
+export enum AppLayoutEnum{
+	HORIZONTAL='HORIZONTAL',
+	VERTICAL='VERTICAL'
+}
