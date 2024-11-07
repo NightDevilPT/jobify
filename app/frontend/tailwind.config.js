@@ -33,7 +33,24 @@ module.exports = {
         warning: 'var(--warning)',
         danger: 'var(--danger)',
       },
+      container:{
+        center:true
+      },
+      gridTemplateColumns: {
+        'body-layout': '230px 1fr', // Custom two-column layout
+      }
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities, theme }) {
+      const newUtilities = {
+        '::selection': {
+          backgroundColor: theme('colors.primary.500'), // Primary color as background
+          color: 'white', // Foreground color as text color
+          borderRadius:`10px`
+        },
+      };
+      addUtilities(newUtilities, ['responsive']);
+    },
+  ],
 };

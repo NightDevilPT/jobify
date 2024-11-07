@@ -1,4 +1,10 @@
-<div class="w-full h-full bg-foreground grid grid-cols-[repeat(2,minmax(200px 1ffr))]">
-	<div class="w-full h-full"></div>
-	<div class="w-full h-full border border-divider"></div>
+<div class="w-full h-full relative">
+	<div class="w-full h-16 bg-background">
+	</div>
+	<div class="w-full h-[calc(100vh-4rem)] grid grid-cols-body-layout">
+		<div class="w-full h-full bg-background"></div>
+		<div class="w-full h-full p-5 bg-content-2">
+			<router-outlet></router-outlet>
+		</div>
+	</div>
 </div>
