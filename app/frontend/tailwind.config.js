@@ -20,6 +20,7 @@ module.exports = {
         // Background and Foreground Colors
         background: 'var(--background-color)',
         foreground: 'var(--forground-color)',
+        secondary: 'var(--secondary-color)',
         default: 'var(--default)',
         divider: 'var(--divider)',
         content: {
@@ -37,7 +38,8 @@ module.exports = {
         center:true
       },
       gridTemplateColumns: {
-        'body-layout': '230px 1fr', // Custom two-column layout
+        'sidebar-full': '16rem 1fr', // Custom two-column layout
+        'sidebar-mini':'5rem 1fr'
       }
     },
   },

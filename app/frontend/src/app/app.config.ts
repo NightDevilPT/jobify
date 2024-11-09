@@ -7,6 +7,7 @@ import { provideStore } from '@ngrx/store';
 import { rootReducer } from './store/store.reducer';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,6 +20,6 @@ export const appConfig: ApplicationConfig = {
     provideStoreDevtools({
       maxAge: 25, // Number of actions to retain
       logOnly: false // Set to true for production
-    }),
+    }), provideAnimationsAsync(),
   ],
 };
