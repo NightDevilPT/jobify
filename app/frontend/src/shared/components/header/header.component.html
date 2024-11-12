@@ -1,9 +1,56 @@
-<div class="w-full h-full px-5 flex justify-between items-center">
-  <div class="w-auto h-auto flex justify-center items-center gap-2 cursor-pointer">
-    <div [innerHTML]="icons['logo']"></div>
+<div class="w-full h-full flex justify-between items-center px-5">
+  <!-- Logo Section -->
+  <div
+    class="w-auto h-auto flex justify-start items-center gap-2 cursor-pointer min-w-52"
+  >
+    <span class="material-symbols-outlined text-4xl text-primary-500">
+      travel_explore
+    </span>
     <div class="relative grid grid-cols-1">
-      <span class="text-primary-500 text-xl font-bold relative z-20">Jobify</span>
-      <span class="text-xs relative bottom-1 text-secondary font-medium">Job Dashboard</span>
+      <span
+        class="text-foreground text-xl font-bold relative z-20 tracking-wider"
+        >Jobify</span
+      >
+      <span class="text-xs relative bottom-[0.35rem] text-secondary font-[500]"
+        >Job Dashboard</span
+      >
+    </div>
+  </div>
+
+  <div class="flex-1 h-full flex justify-between items-center py-3">
+    <!-- Search Bar -->
+    <div
+      class="min-w-72 px-3 h-full rounded-md bg-content-2 flex justify-start items-center gap-3"
+    >
+      <input
+        type="text"
+        class="flex-1 min-w-44 outline-none border-none placeholder:text-foreground text-foreground text-base"
+        placeholder="Search..."
+      />
+      <span class="material-symbols-outlined text-secondary text-xl">
+        search
+      </span>
+    </div>
+    <div class="flex-1 flex justify-end items-center gap-2">
+      <div
+        class="w-7 h-7 rounded-full flex justify-center items-center cursor-pointer"
+        (click)="onToggleTheme()"
+      >
+        <ng-container *ngIf="themeType$ | async as themeType">
+          <span
+            class="material-symbols-outlined w-full h-full text-foreground flex justify-center items-center text-xl"
+            *ngIf="themeType === AppThemeEnum.DARK"
+          >
+            light_mode
+          </span>
+          <span
+            class="material-symbols-outlined w-full h-full text-foreground flex justify-center items-center text-2xl"
+            *ngIf="themeType === AppThemeEnum.LIGHT"
+          >
+            dark_mode
+          </span>
+        </ng-container>
+      </div>
     </div>
   </div>
 </div>
