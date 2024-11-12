@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 /* src/styles.css */
 // src/styles.scss
+@import url("https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
@@ -10,18 +11,18 @@
 }
 
 :root {
-  --forground-color:#11181C;
-  --secondary-color:#888888;
-  --background-color:#FFFFFF;
-  --default:#d4d4d8;
-  --divider:#11111126;
-  --content-1:#FFFFFF;
-  --content-2:#f4f4f5;
-  --content-3:#e4e4e7;
-  --content-4:#d4d4d8;
-  --success:#17c964;
-  --warning:#f5a524;
-  --danger:#f31260;
+  --forground-color: #555555;
+  --secondary-color: #888888;
+  --background-color: #ffffff;
+  --default: #d4d4d8;
+  --divider: #11111126;
+  --content-1: #ffffff;
+  --content-2: #f4f4f5;
+  --content-3: #e4e4e7;
+  --content-4: #d4d4d8;
+  --success: #17c964;
+  --warning: #f5a524;
+  --danger: #f31260;
 
   --primary-100: #ffe4e6;
   --primary-200: #fecdd3;
@@ -34,32 +35,33 @@
   --primary-900: #881337;
 }
 
-[data-theme="dark"]{
-  --forground-color:#FFFFFF;
-  --secondary-color:#888888;
-  --background-color:#000000;
-  --default:#3f3f46;
-  --divider:#ffffff26;
-  --content-1:#18181b;
-  --content-2:#27272a;
-  --content-3:#3f3f46;
-  --content-4:#52525b;
-  --success:#17c964;
-  --warning:#f5a524;
-  --danger:#f31260;
+[data-theme="dark"] {
+  --forground-color: #d3d3d3;
+  --secondary-color: #535353;
+  --background-color: #212130;
+  --default: #3f3f46;
+  --divider: #ffffff26;
+  --content-1: #18181b;
+  --content-2: #17171e ;
+  --content-3: #3f3f46;
+  --content-4: #52525b;
+  --success: #17c964;
+  --warning: #f5a524;
+  --danger: #f31260;
 }
-[data-theme="light"]{
-  --forground-color:#11181C;
-  --background-color:#FFFFFF;
-  --default:#d4d4d8;
-  --divider:#11111126;
-  --content-1:#FFFFFF;
-  --content-2:#f4f4f5;
-  --content-3:#e4e4e7;
-  --content-4:#d4d4d8;
-  --success:#17c964;
-  --warning:#f5a524;
-  --danger:#f31260;
+[data-theme="light"] {
+  --forground-color: #555555;
+  --secondary-color: #a9a9a9;
+  --background-color: #ffffff;
+  --default: #d4d4d8;
+  --divider: #11111126;
+  --content-1: #ffffff;
+  --content-2: #f4f4f5;
+  --content-3: #e4e4e7;
+  --content-4: #d4d4d8;
+  --success: #17c964;
+  --warning: #f5a524;
+  --danger: #f31260;
 }
 [data-primary="rose"] {
   --primary-100: #ffe4e6;
@@ -106,5 +108,16 @@
   --primary-900: #064e3b;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: "Host Grotesk", sans-serif;
+}
+
+input{
+  color: var(--forground-color);
+  background-color: transparent;
+}

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
+import { ThemeService } from './theme.service';
 
-import { SvgIconService } from './svg-icon.service';
 
-describe('SvgIconService', () => {
-  let service: SvgIconService;
+describe('ThemeServiceService', () => {
+  let service: ThemeService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SvgIconService);
+    service = TestBed.inject(ThemeService);
   });
 
   it('should be created', () => {

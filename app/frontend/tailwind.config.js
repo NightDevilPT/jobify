@@ -37,8 +37,12 @@ module.exports = {
       container:{
         center:true
       },
+      fontFamily: {
+        'host-grotest': ['Host Grotesk', 'sans-serif'],  // Default sans-serif font
+        "secondary": ['Montserrat', 'sans-serif'], // Secondary display font
+      },
       gridTemplateColumns: {
-        'sidebar-full': '16rem 1fr', // Custom two-column layout
+        'sidebar-full': '13rem 1fr', // Custom two-column layout
         'sidebar-mini':'5rem 1fr'
       }
     },
