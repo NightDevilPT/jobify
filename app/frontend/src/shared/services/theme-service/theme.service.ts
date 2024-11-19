@@ -37,11 +37,15 @@ export class ThemeService {
   }
 
   private initializeTheme(): void {
-    const storedTheme = this.localStorageService.getItem<AppThemeEnum>(this.THEME_STORAGE_KEY);
-    if (storedTheme) {
-      this.setTheme(storedTheme); // Set theme from local storage
+    if (isPlatformBrowser(this.platformId)) {
+      const storedTheme = this.localStorageService.getItem<AppThemeEnum>(this.THEME_STORAGE_KEY);
+      if (storedTheme) {
+        this.setTheme(storedTheme); // Set theme from local storage
+      } else {
+        this.setTheme(AppThemeEnum.LIGHT); // Default theme if no local storage
+      }
     } else {
-      this.setTheme(AppThemeEnum.LIGHT); // Set default theme if no theme in local storage
+      this.setTheme(AppThemeEnum.LIGHT); // Default theme for SSR
     }
   }
 

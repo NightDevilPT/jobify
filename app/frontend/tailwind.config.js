@@ -1,5 +1,6 @@
 // tailwind.config.js
 module.exports = {
+  prefix: 'tw-',
   content: [
     "./src/**/*.{html,ts}", // Paths to your files
   ],
