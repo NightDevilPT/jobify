@@ -10,9 +10,9 @@
     [model]="menuItems"
     [popup]="isPopup"
     [ngStyle]="{
-      width: isPopup ? '' : '100%',
-      'background-color': isPopup ? 'red' : ''
+      width: isPopup ? '' : '100%'
     }"
+    [styleClass]="style"
   >
     <!-- Start Template -->
     <ng-template *ngIf="startTemplate" pTemplate="start">
