@@ -31,11 +31,13 @@ services:
             - "3000:3000"
         environment:
             - NODE_ENV=development
-            - MONGODB_URI=mongodb://root:root@127.0.0.1:27018/jobify?authSource=admin
+            - MONGODB_URI=mongodb://root:root@mongo-db:27017/jobify?authSource=admin
             - CHOKIDAR_USEPOLLING=true
         command: npx nodemon --watch src --exec "npm run start:dev"
         depends_on:
             - mongodb
+        networks:
+            - mongo  # Ensure backend is connected to the 'mongo' network
         deploy:
             resources:
                 limits:
@@ -50,9 +52,9 @@ services:
             MONGO_INITDB_ROOT_PASSWORD: "root"
             MONGO_INITDB_DATABASE: "jobify"
         ports:
-            - "127.0.0.1:27018:27017"
+            - "27017:27017"
         networks:
-            - mongo
+            - mongo  # Ensure mongodb is connected to the 'mongo' network
         volumes:
             - mongo-data:/data/db
             - mongo-config:/data/configdb
@@ -73,5 +75,5 @@ volumes:
     redis-data:
 
 networks:
-    mongo:
+    mongo:  # Define the 'mongo' network
     cache:
