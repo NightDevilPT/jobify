@@ -1,4 +1,4 @@
-FROM node:18 AS development
+FROM node:20 AS development
 WORKDIR /usr/src/app
 RUN npm install -g @nestjs/cli nodemon
 COPY package*.json ./
