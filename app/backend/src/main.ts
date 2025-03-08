@@ -9,6 +9,6 @@ async function bootstrap() {
   app.useGlobalInterceptors(new TimingInterceptor());
   app.use(cookieParser());
   ConfigurationModule.setupSwagger(app);
-  await app.listen(3000);
+  await app.listen(3001);
 }
 bootstrap();

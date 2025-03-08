@@ -1,28 +1,20 @@
-# Stage 1: Build Angular app
-FROM node:20 AS build
+# Use the official Node.js 22 image as the base image
+FROM node:22
 
-WORKDIR /usr/src/app
+# Set the working directory in the container
+WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy package.json and package-lock.json (if available)
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy all files to container
+# Copy the rest of the application code
 COPY . .
 
-# Build the Angular app in production mode
-RUN npm run build --prod
+# Expose the port that the app runs on
+EXPOSE 3000
 
-# Stage 2: Serve with NGINX
-FROM nginx:alpine
-
-# Copy the build output to NGINX default folder
-COPY --from=build /usr/src/app/dist/your-angular-app-name /usr/share/nginx/html
-
-# Expose port 80 to serve the app
-EXPOSE 80
-
-# Start NGINX server
-CMD ["nginx", "-g", "daemon off;"]
+# Start the Next.js application
+CMD ["npm", "start"]
