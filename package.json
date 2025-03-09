@@ -9,6 +9,6 @@
 		"install:frontend": "cd app/frontend && npm install",
 		"install:backend": "cd app/backend && npm install",
 		"start:backend":"cd app/backend && npm run start:dev",
-		"start:frontend":"cd app/frontend && ng serve"
+		"start:frontend":"cd app/frontend && npm run dev"
 	}
 }
