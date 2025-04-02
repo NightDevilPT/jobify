@@ -1,0 +1,22 @@
+{
+	"name": "jobify.v2",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"private": true,
+	"workspaces": [
+		"apps/*"
+	],
+	"scripts": {
+		"dev": "concurrently \"pnpm --filter frontend dev\" \"pnpm --filter backend start:dev\"",
+		"build": "pnpm --filter frontend build && pnpm --filter backend build",
+		"start": "pnpm --filter frontend start && pnpm --filter backend start"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"packageManager": "pnpm@10.7.1",
+	"devDependencies": {
+		"concurrently": "^7.0.0"
+	}
+}
