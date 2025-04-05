@@ -7,7 +7,7 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { ApiResponse } from 'src/interfaces/api-response.interface';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class ResponseInterceptor<T> implements NestInterceptor {
     const ACCESS_TOKEN_AGE = 10 * 60 * 1000; // 10 mins
     const REFRESH_TOKEN_AGE = 12 * 60 * 1000; // 12 mins
     const startTime = Date.now(); // ⏱️ Start measuring time
-	
+
     return next.handle().pipe(
       map((resData: any) => {
         const endTime = Date.now(); // ⏱️ End time
@@ -31,8 +31,10 @@ export class ResponseInterceptor<T> implements NestInterceptor {
 
         const statusCode = resData?.statusCode || response.statusCode || 200;
 
-        // Extract and handle cookies
-        const { accessToken, refreshToken, ...data } = resData?.data ?? resData;
+        // ✅ Safe destructuring
+        const { accessToken, refreshToken, ...data } = {
+          ...(resData?.data ?? resData ?? {}),
+        };
 
         if (accessToken) {
           response.cookie('accessToken', accessToken, {

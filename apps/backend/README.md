@@ -60,7 +60,9 @@ $ pnpm run test:cov
 ## Schema Relations
 ![](./assets//schema.png)
 
-## Schema Definations
+## Schema Definitions
+
+
 #### User
 User can be done
 

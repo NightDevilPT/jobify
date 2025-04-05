@@ -1,7 +1,16 @@
+// meta.interface.ts
+export interface MetaData {
+  currentPage?: number;
+  previousPage?: number | null;
+  nextPage?: number | null;
+  totalPage?: number;
+  totalData?: number;
+  [key: string]: any; // Allow additional dynamic fields
+}
 export interface ServiceResponse<T> {
   data: T;
   message?: string;
-  meta?: Record<string, any>;
+  meta?: MetaData;
   statusCode?: number;
   accessToken?: string;
   refreshToken?: string;
@@ -12,12 +21,10 @@ export interface ApiResponse<T> {
   statusCode: number;
   message: string;
   data: T;
-  meta?: {
-    totalCount?: number;
-    totalPages?: number;
-    nextPage?: number | null;
-    previousPage?: number | null;
-    [key: string]: any;
+  meta?: MetaData & {
+    timeTakenMs?: number;
+    timestamp?: string;
+    path?: string;
   };
 }
 
