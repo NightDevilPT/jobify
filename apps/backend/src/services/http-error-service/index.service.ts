@@ -5,7 +5,7 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 
 @Injectable()
 export class HttpErrorService {
-  createError(errorType: ErrorTypes, context: string): HttpException {
+  throwError(errorType: ErrorTypes, context: string): void {
     const statusCode = this.getStatusCode(errorType);
     const message = `${context}: ${errorType}`;
 

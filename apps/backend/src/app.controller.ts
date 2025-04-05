@@ -36,6 +36,6 @@ export class AppController {
 
   @Get('error')
   throwDummyError() {
-    return this.httpError.createError(ErrorTypes.NotFound, 'Dummy error');
+    return this.httpError.throwError(ErrorTypes.NotFound, 'Dummy error');
   }
 }

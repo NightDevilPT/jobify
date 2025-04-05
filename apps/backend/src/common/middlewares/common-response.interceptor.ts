@@ -70,8 +70,7 @@ export class ResponseInterceptor<T> implements NestInterceptor {
           meta,
         };
 
-        // Always return a response object, regardless of cookies
-        response.status(statusCode).json(formattedResponse);
+        // Return the formatted response object directly (let Nest handle response sending)
         return formattedResponse;
       }),
     );
