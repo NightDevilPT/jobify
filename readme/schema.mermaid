@@ -1,0 +1,191 @@
+erDiagram
+    Application {
+        ObjectId _id
+        Date createdAt
+        Date updatedAt
+    }
+    Company {
+        ObjectId _id
+        string name
+        string address
+        string website
+        string description
+        Date createdAt
+        Date updatedAt
+    }
+    Education {
+        ObjectId _id
+        string degree "['10th', '12th', 'BACHELORS', 'MASTERS']"
+        string institution
+        Date startDate
+        Date endDate
+        boolean isCurrent
+        Date createdAt
+        Date updatedAt
+    }
+    Experience {
+        ObjectId _id
+        string title
+        string company
+        string location
+        Date startDate
+        Date endDate
+        boolean isCurrent
+        string description
+        string[] technologies
+        Date createdAt
+        Date updatedAt
+    }
+    History {
+        ObjectId _id
+        string eventType "['APPLIED', 'SAVED', 'INTERVIEW_SCHEDULED']"
+        Map from
+        Map to
+        Date createdAt
+    }
+    Job {
+        ObjectId _id
+        string title
+        string description
+        string address
+        number startSalary
+        number endSalary
+        string jobType "['FULL_TIME', 'PART_TIME', 'CONTRACT', 'INTERN']"
+        string workType "['ONSITE', 'REMOTE', 'HYBRID']"
+        string[] requiredSkills
+        number experienceInYears
+        string jobStatus "['OPEN', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED']"
+        Date createdAt
+        Date updatedAt
+    }
+    JobTest {
+        ObjectId _id
+        string title
+        string description
+        Date createdAt
+        Date updatedAt
+    }
+    Message {
+        ObjectId _id
+        string messageContent
+        boolean readStatus
+        Date createdAt
+        Date updatedAt
+    }
+    Profile {
+        ObjectId _id
+        string firstname
+        string lastname
+        string gender "['MALE', 'FEMALE', 'OTHER']"
+        string address
+        string description
+        Date createdAt
+        Date updatedAt
+    }
+    Resume {
+        ObjectId _id
+        string resumeUrl
+        Date createdAt
+        Date updatedAt
+    }
+    Status {
+        ObjectId _id
+        string name
+        string description
+        number order
+        Date createdAt
+    }
+    TestQuestion {
+        ObjectId _id
+        string question
+        object mcqs
+        string[] correctAns
+        number order
+        string[] userAns
+        string type "['MCQ', 'PARAGRAPH', 'CODE']"
+        Date createdAt
+        Date updatedAt
+    }
+    User {
+        ObjectId _id
+        string username
+        string email
+        string password
+        string token
+        boolean isVerified
+        string userType "['CANDIDATE', 'RECRUITER']"
+        boolean isAdmin
+        Date createdAt
+        Date updatedAt
+    }
+    Notification {
+        ObjectId _id
+        string message
+        boolean isRead
+        Date createdAt
+    }
+    SavedJob {
+        ObjectId _id
+        boolean isSaved
+        Date savedAt
+    }
+    Interview {
+        ObjectId _id
+        Date scheduledAt
+        string mode "['ONLINE', 'OFFLINE']"
+        string meetingLink
+        string notes
+    }
+    CompanyReview {
+        ObjectId _id
+        number rating
+        string review
+        Date createdAt
+    }
+    Subscription {
+        ObjectId _id
+        string planType "['FREE', 'BASIC', 'PRO', 'ENTERPRISE']"
+        Date startDate
+        Date endDate
+        boolean isActive
+    }
+    Tag {
+        ObjectId _id
+        string name
+    }
+
+    Profile ||--o| User : "has"
+    Profile ||--o| Company : "belongs to"
+    Profile ||--o| Experience : "has many"
+    Profile ||--o| Education : "has many"
+    Profile ||--o| History : "has many"
+    Profile ||--o| Application : "has many"
+    Profile ||--o| Resume : "has one"
+    Profile ||--o| Notification : "receives"
+    Profile ||--o| SavedJob : "saves"
+    Profile ||--o| CompanyReview : "writes"
+    Profile ||--o| Message : "sent by"
+    Profile ||--o| Message : "received by"
+
+    Company ||--o| Job : "posts"
+    Company ||--o| CompanyReview : "has many"
+    Company ||--o| Subscription : "has"
+
+    Job ||--o| Application : "has many"
+    Job ||--o| Status : "has many"
+    Job ||--o| Tag : "has many"
+    Job ||--o| SavedJob : "can be saved"
+    Job ||--o| Interview : "schedules"
+
+    JobTest ||--o| Job : "is for"
+    JobTest ||--o| TestQuestion : "has many"
+
+    Application ||--o| Status : "has status"
+    Application ||--o| Message : "receives"
+    Application ||--o| Profile : "applies"
+    Application ||--o| Interview : "has"
+
+    Status ||--o| Application : "related to"
+    Status ||--o| Job : "related to"
+
+    TestQuestion ||--o| JobTest : "part of"
