@@ -58,7 +58,7 @@ $ pnpm run test:cov
 ```
 
 ## Schema Relations
-![](./assets//schema.png)
+![](./assets/schema.png)
 
 ## Schema Definitions
 
