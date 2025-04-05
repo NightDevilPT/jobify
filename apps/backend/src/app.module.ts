@@ -7,7 +7,9 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import configuration from './config/configuration';
 import { MongooseConfigService } from './config/mongoose.config';
+import { LoggerService } from './services/logger-service/index.service';
 import { JwtTokenService } from './services/jwt-token-service/index.service';
+import { HttpErrorService } from './services/http-error-service/index.service';
 
 @Module({
   imports: [
@@ -21,6 +23,6 @@ import { JwtTokenService } from './services/jwt-token-service/index.service';
     JwtModule.register({}),
   ],
   controllers: [AppController],
-  providers: [AppService, JwtTokenService],
+  providers: [AppService, JwtTokenService,LoggerService, HttpErrorService],
 })
 export class AppModule {}

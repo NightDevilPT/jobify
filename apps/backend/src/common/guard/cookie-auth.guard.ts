@@ -23,7 +23,6 @@ export class JwtAuthGuard implements CanActivate {
     const refreshToken = req.cookies['refreshToken'];
 
     const user = this.jwtService.verifyToken<UserPayload>(accessToken);
-    console.log('User:', user);
 
     if (user) {
       req.user = user;

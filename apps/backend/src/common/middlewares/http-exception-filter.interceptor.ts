@@ -7,9 +7,12 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ErrorResponse } from 'src/interfaces/api-response.interface';
+import { LoggerService } from 'src/services/logger-service/index.service';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
+  private readonly logger = new LoggerService(HttpExceptionFilter.name);
+
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -18,6 +21,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
     let message = 'An unexpected error occurred';
     let errorDetails: any = null;
+    let stackTrace = exception?.stack;
 
     if (exception instanceof HttpException) {
       statusCode = exception.getStatus();
@@ -33,9 +37,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
         errorDetails =
           (exceptionResponse as any).error || (exceptionResponse as any);
       }
-    } else {
-      console.error('Unhandled Exception:', exception);
     }
+
+    // 🔥 Log the error
+    this.logger.error(
+      `${request.method} ${request.originalUrl} — ${message}`,
+      stackTrace,
+    );
 
     const errorResponse: ErrorResponse = {
       status: 'error',

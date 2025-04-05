@@ -1,21 +1,20 @@
 import {
   Controller,
   Get,
-  HttpException,
-  HttpStatus,
   Res,
-  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { AppService } from './app.service';
-import { JwtAuthGuard } from './common/guard/cookie-auth.guard';
+import { ErrorTypes } from './interfaces/error.interface';
 import { JwtTokenService } from './services/jwt-token-service/index.service';
+import { HttpErrorService } from './services/http-error-service/index.service';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
     private readonly jwtTokenService: JwtTokenService,
+    private readonly httpError:HttpErrorService
   ) {}
 
   @Get()
@@ -36,13 +35,7 @@ export class AppController {
   }
 
   @Get('error')
-  throwDummyError(): never {
-    throw new HttpException(
-      {
-        message: 'This is a dummy error for testing',
-        error: 'DummyError',
-      },
-      HttpStatus.BAD_REQUEST,
-    );
+  throwDummyError() {
+    return this.httpError.createError(ErrorTypes.NotFound, 'Dummy error');
   }
 }
