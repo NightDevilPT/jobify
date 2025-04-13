@@ -10,6 +10,8 @@ import { MongooseConfigService } from './config/mongoose.config';
 import { LoggerService } from './services/logger-service/index.service';
 import { JwtTokenService } from './services/jwt-token-service/index.service';
 import { HttpErrorService } from './services/http-error-service/index.service';
+import { modules } from './modules/index.module';
+
 
 @Module({
   imports: [
@@ -21,8 +23,14 @@ import { HttpErrorService } from './services/http-error-service/index.service';
       useClass: MongooseConfigService,
     }),
     JwtModule.register({}),
+    ...modules,
   ],
   controllers: [AppController],
-  providers: [AppService, JwtTokenService,LoggerService, HttpErrorService],
+  providers: [
+    AppService,
+    JwtTokenService,
+    LoggerService,
+    HttpErrorService
+  ],
 })
 export class AppModule {}

@@ -32,7 +32,7 @@ export class ResponseInterceptor<T> implements NestInterceptor {
         const statusCode = resData?.statusCode || response.statusCode || 200;
 
         // ✅ Safe destructuring
-        const { accessToken, refreshToken, ...data } = {
+        const { accessToken, refreshToken, } = {
           ...(resData?.data ?? resData ?? {}),
         };
 
@@ -61,12 +61,14 @@ export class ResponseInterceptor<T> implements NestInterceptor {
           timestamp: new Date().toISOString(),
           path: request.url,
         };
+        console.log(
+          `Response Interceptor: ${request.method} ${request.url} - ${statusCode} - ${message} - ${timeTakenMs}ms`)
 
         const formattedResponse: ApiResponse<T> = {
           status: 'success',
           statusCode,
           message,
-          data,
+          data: resData.data || resData,
           meta,
         };
 
