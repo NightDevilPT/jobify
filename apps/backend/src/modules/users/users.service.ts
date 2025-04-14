@@ -2,9 +2,10 @@ import { CommandBus } from '@nestjs/cqrs';
 import { Injectable } from '@nestjs/common';
 import { UserDocument } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserResponseDto } from './dto/response-user.dto';
+import { UserResponseDto, VerifyUserResponseDto } from './dto/response-user.dto';
 import { UserRepository } from './repository/user.repository';
 import { CreateUserCommand } from './commands/impl/create-user.command';
+import { VerifyUserCommand } from './commands/impl/verify-user.command';
 
 @Injectable()
 export class UsersService {
@@ -15,6 +16,10 @@ export class UsersService {
 
   async createUser(dto: CreateUserDto): Promise<UserDocument> {
     return this.commandBus.execute(new CreateUserCommand(dto));
+  }
+
+  async verifyUser(token: string): Promise<VerifyUserResponseDto> {
+    return this.commandBus.execute(new VerifyUserCommand(token));
   }
 
   async getAllUsers(): Promise<UserResponseDto[]> {

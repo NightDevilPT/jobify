@@ -185,7 +185,7 @@ export abstract class BaseRepository<T extends Document>
         );
       }
 
-      return updated as T;
+      return updated?.toObject() as T;
     } catch (error) {
       this.httpErrorService.throwError(
         ErrorTypes.InternalServerError,

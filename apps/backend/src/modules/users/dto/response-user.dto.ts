@@ -1,9 +1,9 @@
 // user-response.dto.ts
 import { UserType } from '../entities/user.entity';
-import { ApiResponseProperty } from '@nestjs/swagger';
+import { ApiResponseProperty, PartialType } from '@nestjs/swagger';
 
 export class UserResponseDto {
-  @ApiResponseProperty({ example: 'john_doe', })
+  @ApiResponseProperty({ example: 'john_doe' })
   username: string;
 
   @ApiResponseProperty({
@@ -33,4 +33,11 @@ export class UserResponseDto {
   isAdmin: boolean;
 
   // Add other properties as needed, excluding the password
+}
+
+export class VerifyUserResponseDto extends PartialType(UserResponseDto) {
+  @ApiResponseProperty({
+    example: 'User successfully verified',
+  })
+  message: string;
 }

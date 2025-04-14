@@ -17,4 +17,9 @@ export class UserRepository extends BaseRepository<UserDocument> {
   async findByEmail(email: string): Promise<UserDocument | null> {
     return this.userModel.findOne({ email });
   }
+
+  async findByToken(token: string): Promise<User | undefined> {
+    const decodedToken = await this.userModel.findOne({ token }).exec();
+    return decodedToken?.toObject();
+  }
 }

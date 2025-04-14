@@ -21,8 +21,17 @@ export interface SwaggerOptions {
   responseType?: any;
   status?: number;
   isArray?: boolean;
-  paramName?: string;
-  paramDescription?: string;
+
+  // Added the `params` field to handle params in routes
+  params?: Record<
+    string,
+    {
+      description?: string;
+      required?: boolean;
+      type?: any;
+    }
+  >;
+
   queryParams?: Array<{
     name: string;
     required?: boolean;
@@ -30,11 +39,13 @@ export interface SwaggerOptions {
     enum?: any[];
     description?: string;
   }>;
+
   auth?: boolean;
   errorResponses?: Array<{
     status: number;
     description: string;
   }>;
+
   bodyType?: any;
   consumes?: SwaggerFormType;
 }
@@ -42,7 +53,6 @@ export interface SwaggerOptions {
 export function SwaggerEndpoint(options: SwaggerOptions) {
   const decorators: any[] = [];
 
-  // Add operation summary
   decorators.push(
     ApiOperation({
       summary: options.summary,
@@ -50,7 +60,6 @@ export function SwaggerEndpoint(options: SwaggerOptions) {
     }),
   );
 
-  // Add response type
   if (options.responseType) {
     decorators.push(
       SwaggerResponse({
@@ -61,7 +70,6 @@ export function SwaggerEndpoint(options: SwaggerOptions) {
     );
   }
 
-  // Add error responses
   if (options.errorResponses) {
     options.errorResponses.forEach((error) => {
       decorators.push(
@@ -73,18 +81,20 @@ export function SwaggerEndpoint(options: SwaggerOptions) {
     });
   }
 
-  // Add parameter if specified
-  if (options.paramName) {
-    decorators.push(
-      ApiParam({
-        name: options.paramName,
-        description:
-          options.paramDescription || `${options.paramName} identifier`,
-      }),
-    );
+  // Handle object-based route params
+  if (options.params) {
+    Object.entries(options.params).forEach(([name, meta]) => {
+      decorators.push(
+        ApiParam({
+          name,
+          description: meta.description || `${name} parameter`,
+          required: meta.required ?? true,
+          type: meta.type,
+        }),
+      );
+    });
   }
 
-  // Add query parameters if specified
   if (options.queryParams) {
     options.queryParams.forEach((param) => {
       decorators.push(
@@ -99,21 +109,14 @@ export function SwaggerEndpoint(options: SwaggerOptions) {
     });
   }
 
-  // Add authentication if specified
   if (options.auth) {
     decorators.push(ApiBearerAuth());
   }
 
-  // Consumes (like multipart)
   decorators.push(ApiConsumes(options.consumes || SwaggerFormType.JSON));
 
-  // Add request body if specified
   if (options.bodyType) {
-    decorators.push(
-      ApiBody({
-        type: options.bodyType,
-      }),
-    );
+    decorators.push(ApiBody({ type: options.bodyType }));
   }
 
   return applyDecorators(...decorators);
