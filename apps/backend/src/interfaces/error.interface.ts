@@ -6,4 +6,5 @@ export enum ErrorTypes {
   BadRequest = 'Bad Request',
   InternalServerError = 'Internal Server Error',
   UnprocessableEntity = 'Unprocessable Entity',
+  Conflict = 'Conflict',
 }

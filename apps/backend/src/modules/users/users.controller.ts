@@ -4,17 +4,19 @@ import {
   UserResponseDto,
   VerifyUserResponseDto,
 } from './dto/response-user.dto';
-import { User, UserDocument } from './entities/user.entity';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { User } from './entities/user.entity';
 import {
   SwaggerEndpoint,
   SwaggerFormType,
 } from 'src/common/decorators/swagger.decorator';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { ResendVerificationLinkDto } from './dto/resend-verification.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
+  // Post Request to create a new user
   @Post()
   @SwaggerEndpoint({
     summary: 'Create a new user',
@@ -34,6 +36,28 @@ export class UsersController {
     return this.userService.createUser(createUserDto);
   }
 
+  // Post Request to resend verification email
+  // This endpoint is used to resend the verification email to the user
+  @Post('resend-verification')
+  @SwaggerEndpoint({
+    bodyType: ResendVerificationLinkDto,
+    summary: 'Resend verification email',
+    description: 'Resends the verification email to the user',
+    responseType: VerifyUserResponseDto,
+    status: 200,
+    errorResponses: [
+      { status: 400, description: 'Validation failed or bad input' },
+      { status: 500, description: 'Internal server error' },
+    ],
+  })
+  async resendVerificationEmail(
+    @Body() resendVerificationLinkDto: ResendVerificationLinkDto,
+  ): Promise<VerifyUserResponseDto> {
+    return this.userService.resendVerificationEmail(resendVerificationLinkDto);
+  }
+
+  // Get Request to verify a user
+  // This endpoint is used to verify a user with the provided token
   @Get('verify/:token')
   @SwaggerEndpoint({
     summary: 'Verify a user',
@@ -55,17 +79,5 @@ export class UsersController {
     @Param('token') token: string,
   ): Promise<VerifyUserResponseDto> {
     return this.userService.verifyUser(token);
-  }
-
-  @Get()
-  @SwaggerEndpoint({
-    summary: 'Get all users',
-    description: 'Retrieves a list of all users in the system',
-    responseType: [UserResponseDto], // Assuming you want to return an array of User
-    status: 200,
-    errorResponses: [{ status: 500, description: 'Internal server error' }],
-  })
-  async getAllUsers(): Promise<UserResponseDto[]> {
-    return this.userService.getAllUsers();
   }
 }

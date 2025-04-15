@@ -27,6 +27,8 @@ export class HttpErrorService {
         return HttpStatus.INTERNAL_SERVER_ERROR;
       case ErrorTypes.UnprocessableEntity:
         return HttpStatus.UNPROCESSABLE_ENTITY;
+      case ErrorTypes.Conflict:
+        return HttpStatus.CONFLICT;
       default:
         return HttpStatus.INTERNAL_SERVER_ERROR; // Default to 500 if not found
     }

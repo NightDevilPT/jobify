@@ -64,7 +64,6 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
           subject: 'Welcome to Our Service',
           provider: MailProvider.GMAIL,
         });
-        console.log(d, 'mail sent successfully');
       }
 
       return newUser;
