@@ -1,6 +1,7 @@
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import {
+  LoginUserResponseDto,
   UserResponseDto,
   VerifyUserResponseDto,
 } from './dto/response-user.dto';
@@ -11,6 +12,7 @@ import {
 } from 'src/common/decorators/swagger.decorator';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ResendVerificationLinkDto } from './dto/resend-verification.dto';
+import { LoginDto } from './dto/login-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -79,5 +81,23 @@ export class UsersController {
     @Param('token') token: string,
   ): Promise<VerifyUserResponseDto> {
     return this.userService.verifyUser(token);
+  }
+
+  // Login Request to login a user
+  // This endpoint is used to login a user with the provided credentials
+  @Post('login')
+  @SwaggerEndpoint({
+    bodyType: LoginDto,
+    summary: 'Login a user',
+    description: 'Logs in a user with the provided credentials',
+    responseType: LoginUserResponseDto,
+    status: 200,
+    errorResponses: [
+      { status: 400, description: 'Invalid credentials' },
+      { status: 500, description: 'Internal server error' },
+    ],
+  })
+  async loginUser(@Body() loginDto: LoginDto): Promise<LoginUserResponseDto> {
+    return this.userService.loginUser(loginDto);
   }
 }

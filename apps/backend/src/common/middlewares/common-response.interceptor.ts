@@ -32,7 +32,7 @@ export class ResponseInterceptor<T> implements NestInterceptor {
         const statusCode = resData?.statusCode || response.statusCode || 200;
 
         // ✅ Safe destructuring
-        const { accessToken, refreshToken, } = {
+        const { accessToken, refreshToken, ...data } = {
           ...(resData?.data ?? resData ?? {}),
         };
 
@@ -68,7 +68,7 @@ export class ResponseInterceptor<T> implements NestInterceptor {
           status: 'success',
           statusCode,
           message,
-          data: resData.data || resData,
+          data,
           meta,
         };
 

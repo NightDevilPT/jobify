@@ -3,11 +3,16 @@ import { Injectable } from '@nestjs/common';
 import { UserDocument } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserRepository } from './repository/user.repository';
-import { VerifyUserResponseDto } from './dto/response-user.dto';
+import {
+  LoginUserResponseDto,
+  VerifyUserResponseDto,
+} from './dto/response-user.dto';
 import { ResendVerificationLinkDto } from './dto/resend-verification.dto';
 import { VerifyUserCommand } from './commands/impl/verify-user.command';
 import { CreateUserCommand } from './commands/impl/create-user.command';
 import { ResendVerificationCommand } from './commands/impl/resend-verification.command';
+import { LoginDto } from './dto/login-user.dto';
+import { LoginUserCommand } from './commands/impl/login-user.command';
 
 @Injectable()
 export class UsersService {
@@ -28,5 +33,9 @@ export class UsersService {
     payload: ResendVerificationLinkDto,
   ): Promise<VerifyUserResponseDto> {
     return this.commandBus.execute(new ResendVerificationCommand(payload));
+  }
+
+  async loginUser(payload: LoginDto): Promise<LoginUserResponseDto> {
+    return this.commandBus.execute(new LoginUserCommand(payload));
   }
 }

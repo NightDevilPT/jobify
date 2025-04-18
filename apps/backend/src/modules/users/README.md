@@ -432,6 +432,106 @@
   </div>  
   <!-- Verify User Start -->
 
+  <!-- Login User Start -->
+  <!-- Login User Start -->
+<div class="accordion">
+  <div class="accordion-item">
+    <input type="checkbox" id="accordion-login">
+    <label for="accordion-login">
+      <div>
+        <span class="method">POST</span> /login <span> - Login a user</span>
+      </div>
+      <span class="accordion-indicator">▼</span>
+    </label>
+    <div class="accordion-content">
+      <div class="accordion-content-inner">
+        <h3>Login a User</h3>
+        <p>Logs in a user with the provided credentials (email and password).</p>
+        <div class="section">
+          <h4>Request Parameters</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>email</td>
+                <td>string</td>
+                <td>The email address of the user</td>
+              </tr>
+              <tr>
+                <td>password</td>
+                <td>string</td>
+                <td>The password of the user (minimum 6 characters)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <h4>Success Response <span class="badge badge-success">200 OK</span></h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>message</td>
+                <td>string</td>
+                <td>Login successful message</td>
+              </tr>
+              <tr>
+                <td>accessToken</td>
+                <td>string</td>
+                <td>JWT token for accessing protected routes</td>
+              </tr>
+              <tr>
+                <td>refreshToken</td>
+                <td>string</td>
+                <td>JWT token for refreshing the access token</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <h4>Error Responses</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Description</th>
+                <th>Example</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="badge badge-warning">400</span> Bad Request</td>
+                <td>Invalid credentials (wrong email or password)</td>
+                <td><pre>{ "statusCode": 400, "message": "Invalid credentials", "error": "Bad Request" }</pre></td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-danger">500</span> Internal Server Error</td>
+                <td>Unexpected server-side error</td>
+                <td><pre>{ "statusCode": 500, "message": "Internal server error", "error": "Internal Server Error" }</pre></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- Login User End -->
+
+  <!-- Login User End -->
   <footer>
     <p>© 2025 User Authentication API Documentation</p>
   </footer>

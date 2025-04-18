@@ -41,3 +41,20 @@ export class VerifyUserResponseDto extends PartialType(UserResponseDto) {
   })
   message: string;
 }
+
+export class LoginUserResponseDto extends PartialType(UserResponseDto) {
+  @ApiResponseProperty({
+    example: 'Login successful',
+  })
+  message: string;
+
+  @ApiResponseProperty({
+    example: 'access_token_string',
+  })
+  accessToken: string;
+
+  @ApiResponseProperty({
+    example: 'refresh_token_string',
+  })
+  refreshToken: string;
+}
