@@ -7,6 +7,7 @@ import {
 	SidebarFooter,
 	SidebarHeader,
 	SidebarRail,
+	useSidebar,
 } from "@/components/ui/sidebar";
 import { sidebarNavGroups } from "./routes";
 import { JobifyNavSidebar } from "./nav-sidebar";
@@ -15,9 +16,10 @@ import { JobifyUserNav } from "@/components/molecules/jobify-user/jobify-user";
 import { Separator } from "@/components/ui/separator";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+	const {state} = useSidebar()
 	return (
-		<Sidebar collapsible="icon" {...props} variant="inset">
-			<SidebarHeader className="w-full flex justify-center items-start">
+		<Sidebar collapsible="icon" {...props} variant="floating">
+			<SidebarHeader className={`w-full flex justify-center ${state==='collapsed'?'items-center':'items-start'}`}>
 				<JobifyLogo />
 			</SidebarHeader>
 			<Separator />

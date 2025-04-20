@@ -6,12 +6,10 @@ const JobifyLogo = () => {
 	const { state } = useSidebar();
 	return (
 		<div
-			className={`w-auto h-auto grid grid-cols-[40px,_1fr] gap-3 place-content-center place-items-center`}
+			className={`w-auto h-auto ${state==='collapsed'?'flex justify-center items-center':'grid grid-cols-[40px,_1fr] place-content-center place-items-center'} gap-3`}
 		>
 			<Component
-				className={`text-primary ${
-					state === "collapsed" ? "w-6 h-6" : "w-full h-full"
-				}`}
+				className={`text-primary w-full h-full`}
 			/>
 			{state === "expanded" && (
 				<div className="grid grid-cols-1 gap-0">
