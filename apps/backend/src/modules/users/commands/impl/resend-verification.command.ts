@@ -1,5 +1,5 @@
-import { ResendVerificationLinkDto } from "../../dto/resend-verification.dto";
+import { LinkDto } from "../../dto/resend-verification.dto";
 
 export class ResendVerificationCommand {
-  constructor(public readonly payload: ResendVerificationLinkDto) {}
+  constructor(public readonly payload: LinkDto) {}
 }

@@ -433,7 +433,6 @@
   <!-- Verify User Start -->
 
   <!-- Login User Start -->
-  <!-- Login User Start -->
 <div class="accordion">
   <div class="accordion-item">
     <input type="checkbox" id="accordion-login">
@@ -526,12 +525,232 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
 <!-- Login User End -->
 
-  <!-- Login User End -->
+<!-- Forget Password Start -->
+  <div class="accordion">
+  <div class="accordion-item">
+    <input type="checkbox" id="accordion-forget-password">
+    <label for="accordion-forget-password">
+      <div>
+        <span class="method">POST</span> /forget-password <span> - Request password reset</span>
+      </div>
+      <span class="accordion-indicator">▼</span>
+    </label>
+    <div class="accordion-content">
+      <div class="accordion-content-inner">
+        <h3>Forget Password</h3>
+        <p>Initiates a password reset process by sending an email with a reset link to the registered email address.</p>
+        <div class="section">
+          <h4>Request Parameters</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Validation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>email</td>
+                <td>string</td>
+                <td>Registered email address of the user</td>
+                <td>Must be a valid email format</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <h4>Success Response <span class="badge badge-success">200 OK</span></h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>message</td>
+                <td>string</td>
+                <td>Confirmation message</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre class="response-example">
+{
+  "message": "Reset password link sent to your email"
+}</pre>
+        </div>
+        <div class="section">
+          <h4>Error Responses</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Description</th>
+                <th>Example</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="badge badge-warning">400</span> Bad Request</td>
+                <td>Invalid email format or missing required field</td>
+                <td><pre>{
+  "statusCode": 400,
+  "message": ["email must be an email"],
+  "error": "Bad Request"
+}</pre></td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-warning">404</span> Not Found</td>
+                <td>Email not registered in the system</td>
+                <td><pre>{
+  "statusCode": 404,
+  "message": "User not found",
+  "error": "Not Found"
+}</pre></td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-danger">500</span> Internal Server Error</td>
+                <td>Failed to send email or server error</td>
+                <td><pre>{
+  "statusCode": 500,
+  "message": "Failed to send verification email",
+  "error": "Internal Server Error"
+}</pre></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Forget Password End -->
+  
+
+  <div class="accordion">
+  <div class="accordion-item">
+    <input type="checkbox" id="accordion-update-password">
+    <label for="accordion-update-password">
+      <div>
+        <span class="method">POST</span> /update-password <span> - Update user password</span>
+      </div>
+      <span class="accordion-indicator">▼</span>
+    </label>
+    <div class="accordion-content">
+      <div class="accordion-content-inner">
+        <h3>Update Password</h3>
+        <p>Updates the user's password using the provided reset token and new password. Clears the reset token after successful update.</p>
+        <div class="section">
+          <h4>Request Parameters</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Validation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>token</td>
+                <td>string</td>
+                <td>Password reset token received via email</td>
+                <td>Required, non-empty string</td>
+              </tr>
+              <tr>
+                <td>password</td>
+                <td>string</td>
+                <td>New password for the account</td>
+                <td>Required, non-empty string</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <h4>Success Response <span class="badge badge-success">200 OK</span></h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>message</td>
+                <td>string</td>
+                <td>Confirmation message</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <h4>Error Responses</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Description</th>
+                <th>Example</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="badge badge-warning">400</span> Bad Request</td>
+                <td>Missing or invalid token/password</td>
+                <td><pre>{
+  "statusCode": 400,
+  "message": "Token is required",
+  "error": "Bad Request"
+}</pre></td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-warning">404</span> Not Found</td>
+                <td>User not found with provided token</td>
+                <td><pre>{
+  "statusCode": 404,
+  "message": "User not found",
+  "error": "Not Found"
+}</pre></td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-warning">409</span> Conflict</td>
+                <td>User account is not verified</td>
+                <td><pre>{
+  "statusCode": 409,
+  "message": "User is not verified",
+  "error": "Conflict"
+}</pre></td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-danger">500</span> Internal Server Error</td>
+                <td>Failed to update password</td>
+                <td><pre>{
+  "statusCode": 500,
+  "message": "Failed to update user",
+  "error": "Internal Server Error"
+}</pre></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Update Password End -->
+
+
   <footer>
     <p>© 2025 User Authentication API Documentation</p>
   </footer>

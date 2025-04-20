@@ -42,6 +42,24 @@ export class VerifyUserResponseDto extends PartialType(UserResponseDto) {
   message: string;
 }
 
+export class ForgetPasswordUserResponseDto extends PartialType(
+  UserResponseDto,
+) {
+  @ApiResponseProperty({
+    example: 'User successfully verified',
+  })
+  message: string;
+}
+
+export class UpdatePasswordUserResponseDto extends PartialType(
+  UserResponseDto,
+) {
+  @ApiResponseProperty({
+    example: 'Password updated successfully',
+  })
+  message: string;
+}
+
 export class LoginUserResponseDto extends PartialType(UserResponseDto) {
   @ApiResponseProperty({
     example: 'Login successful',

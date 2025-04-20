@@ -1,7 +1,9 @@
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import {
+  ForgetPasswordUserResponseDto,
   LoginUserResponseDto,
+  UpdatePasswordUserResponseDto,
   UserResponseDto,
   VerifyUserResponseDto,
 } from './dto/response-user.dto';
@@ -11,8 +13,9 @@ import {
   SwaggerFormType,
 } from 'src/common/decorators/swagger.decorator';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ResendVerificationLinkDto } from './dto/resend-verification.dto';
+import { LinkDto } from './dto/resend-verification.dto';
 import { LoginDto } from './dto/login-user.dto';
+import { UpdatePasswordDto } from './dto/update-password-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -42,7 +45,7 @@ export class UsersController {
   // This endpoint is used to resend the verification email to the user
   @Post('resend-verification')
   @SwaggerEndpoint({
-    bodyType: ResendVerificationLinkDto,
+    bodyType: LinkDto,
     summary: 'Resend verification email',
     description: 'Resends the verification email to the user',
     responseType: VerifyUserResponseDto,
@@ -53,10 +56,50 @@ export class UsersController {
     ],
   })
   async resendVerificationEmail(
-    @Body() resendVerificationLinkDto: ResendVerificationLinkDto,
+    @Body() resendVerificationLinkDto: LinkDto,
   ): Promise<VerifyUserResponseDto> {
     return this.userService.resendVerificationEmail(resendVerificationLinkDto);
   }
+
+  // Post Request to resend verification email
+  // This endpoint is used to resend the verification email to the user
+  @Post('forget-password')
+  @SwaggerEndpoint({
+    bodyType: LinkDto,
+    summary: 'Forget password email',
+    description: 'Forget password email to the user',
+    responseType: ForgetPasswordUserResponseDto,
+    status: 200,
+    errorResponses: [
+      { status: 400, description: 'Validation failed or bad input' },
+      { status: 500, description: 'Internal server error' },
+    ],
+  })
+  async forgetPassword(
+    @Body() forgetPasswordPayload: LinkDto,
+  ): Promise<ForgetPasswordUserResponseDto> {
+    return this.userService.forgetPassword(forgetPasswordPayload);
+  }
+
+
+  @Post('update-password')
+  @SwaggerEndpoint({
+    bodyType: UpdatePasswordDto,
+    summary: 'Forget password email',
+    description: 'Forget password email to the user',
+    responseType: ForgetPasswordUserResponseDto,
+    status: 200,
+    errorResponses: [
+      { status: 400, description: 'Validation failed or bad input' },
+      { status: 500, description: 'Internal server error' },
+    ],
+  })
+  async updatePassword(
+    @Body() updatePasswordPayload: UpdatePasswordDto,
+  ): Promise<UpdatePasswordUserResponseDto> {
+    return this.userService.updatePassword(updatePasswordPayload);
+  }
+
 
   // Get Request to verify a user
   // This endpoint is used to verify a user with the provided token

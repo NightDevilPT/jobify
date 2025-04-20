@@ -4,15 +4,21 @@ import { UserDocument } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserRepository } from './repository/user.repository';
 import {
+  ForgetPasswordUserResponseDto,
   LoginUserResponseDto,
+  UpdatePasswordUserResponseDto,
   VerifyUserResponseDto,
 } from './dto/response-user.dto';
-import { ResendVerificationLinkDto } from './dto/resend-verification.dto';
+import { LinkDto } from './dto/resend-verification.dto';
 import { VerifyUserCommand } from './commands/impl/verify-user.command';
 import { CreateUserCommand } from './commands/impl/create-user.command';
 import { ResendVerificationCommand } from './commands/impl/resend-verification.command';
 import { LoginDto } from './dto/login-user.dto';
 import { LoginUserCommand } from './commands/impl/login-user.command';
+import { ForgetPasswordCommand } from './commands/impl/forget-user.command';
+import { UpdatePasswordDto } from './dto/update-password-user.dto';
+import { UpdatePasswordCommandHandler } from './commands/handler/update-password-user.handler';
+import { UpdatePasswordCommand } from './commands/impl/update-password.command';
 
 @Injectable()
 export class UsersService {
@@ -30,9 +36,21 @@ export class UsersService {
   }
 
   async resendVerificationEmail(
-    payload: ResendVerificationLinkDto,
+    payload: LinkDto,
   ): Promise<VerifyUserResponseDto> {
     return this.commandBus.execute(new ResendVerificationCommand(payload));
+  }
+
+  async forgetPassword(
+    payload: LinkDto,
+  ): Promise<ForgetPasswordUserResponseDto> {
+    return this.commandBus.execute(new ForgetPasswordCommand(payload));
+  }
+
+  async updatePassword(
+    payload: UpdatePasswordDto,
+  ): Promise<UpdatePasswordUserResponseDto> {
+    return this.commandBus.execute(new UpdatePasswordCommand(payload));
   }
 
   async loginUser(payload: LoginDto): Promise<LoginUserResponseDto> {

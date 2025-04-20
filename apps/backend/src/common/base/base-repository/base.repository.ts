@@ -137,18 +137,8 @@ export abstract class BaseRepository<T extends Document>
       const data = await this.model
         .findOne({ [field]: value } as FilterQuery<T>)
         .exec();
-      if (!data) {
-        this.httpErrorService.throwError(
-          ErrorTypes.NotFound,
-          'Resource not found',
-        );
-      }
       return data as T;
     } catch (error) {
-      this.httpErrorService.throwError(
-        ErrorTypes.InternalServerError,
-        'Failed to retrieve resource',
-      );
       throw error; // This line will never be reached due to throwError
     }
   }
