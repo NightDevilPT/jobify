@@ -14,17 +14,24 @@ import { JobifyNavSidebar } from "./nav-sidebar";
 import JobifyLogo from "@/components/molecules/jobify-logo/jobify-logo";
 import { JobifyUserNav } from "@/components/molecules/jobify-user/jobify-user";
 import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-	const {state} = useSidebar()
+	const { state } = useSidebar();
 	return (
-		<Sidebar collapsible="icon" {...props} variant="floating">
-			<SidebarHeader className={`w-full flex justify-center ${state==='collapsed'?'items-center':'items-start'}`}>
+		<Sidebar collapsible="icon" {...props}>
+			<SidebarHeader
+				className={`w-full flex justify-center ${
+					state === "collapsed" ? "items-center" : "items-start"
+				}`}
+			>
 				<JobifyLogo />
 			</SidebarHeader>
 			<Separator />
 			<SidebarContent>
-				<JobifyNavSidebar navGroups={sidebarNavGroups} />
+				<ScrollArea className="w-full h-full">
+					<JobifyNavSidebar navGroups={sidebarNavGroups} />
+				</ScrollArea>
 			</SidebarContent>
 			<Separator />
 			<SidebarFooter>
